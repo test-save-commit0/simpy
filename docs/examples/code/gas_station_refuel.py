@@ -24,69 +24,69 @@ import simpy
 
 
 RANDOM_SEED = 42
-GAS_STATION_SIZE = 200     # liters
-THRESHOLD = 25             # Threshold for calling the tank truck (in %)
-FUEL_TANK_SIZE = 50        # liters
-FUEL_TANK_LEVEL = [5, 25]  # Min/max levels of fuel tanks (in liters)
-REFUELING_SPEED = 2        # liters / second
-TANK_TRUCK_TIME = 300      # Seconds it takes the tank truck to arrive
-T_INTER = [30, 300]        # Create a car every [min, max] seconds
-SIM_TIME = 1000            # Simulation time in seconds
+STATION_TANK_SIZE = 200    # Size of the gas station tank (liters)
+THRESHOLD = 25             # Station tank level threshold for calling the tank truck (% of full)
+CAR_TANK_SIZE = 50         # Size of car fuel tanks (liters)
+CAR_TANK_LEVEL = [5, 25]   # Min/max levels of car fuel tanks (liters)
+REFUELING_SPEED = 2        # Rate of refuelling car fuel tank (liters / second)
+TANK_TRUCK_TIME = 300      # Time it takes the tank truck to arrive after being called (seconds)
+T_INTER = [30, 300]        # Interval between car arrivals [min, max] (seconds)
+SIM_TIME = 1000            # Simulation time (seconds)
 
 
-def car(name, env, gas_station, fuel_pump):
+def car(name, env, gas_station, station_tank):
     """A car arrives at the gas station for refueling.
 
     It requests one of the gas station's fuel pumps and tries to get the
-    desired amount of gas from it. If the station's reservoir is
+    desired amount of fuel from it. If the station's fuel tank is
     depleted, the car has to wait for the tank truck to arrive.
 
     """
-    fuel_tank_level = random.randint(*FUEL_TANK_LEVEL)
-    print('%s arriving at gas station at %.1f' % (name, env.now))
+    car_tank_level = random.randint(*CAR_TANK_LEVEL)
+    print('%s arrived at gas station at %.1f seconds' % (name, env.now))
     with gas_station.request() as req:
         start = env.now
         # Request one of the gas pumps
         yield req
 
         # Get the required amount of fuel
-        liters_required = FUEL_TANK_SIZE - fuel_tank_level
-        yield fuel_pump.get(liters_required)
+        fuel_required = CAR_TANK_SIZE - car_tank_level
+        yield station_tank.get(fuel_required)
 
         # The "actual" refueling process takes some time
-        yield env.timeout(liters_required / REFUELING_SPEED)
+        yield env.timeout(fuel_required / REFUELING_SPEED)
 
-        print('%s finished refueling in %.1f seconds.' % (name,
-                                                          env.now - start))
+        print('%s finished refueling at %.1f seconds.' % (name,
+                                                          env.now))
 
 
-def gas_station_control(env, fuel_pump):
-    """Periodically check the level of the *fuel_pump* and call the tank
+def gas_station_control(env, station_tank):
+    """Periodically check the level of the gas station tank and call the tank
     truck if the level falls below a threshold."""
     while True:
-        if fuel_pump.level / fuel_pump.capacity * 100 < THRESHOLD:
+        if station_tank.level / station_tank.capacity * 100 < THRESHOLD:
             # We need to call the tank truck now!
-            print('Calling tank truck at %d' % env.now)
-            # Wait for the tank truck to arrive and refuel the station
-            yield env.process(tank_truck(env, fuel_pump))
+            print('Calling tank truck at %.1f seconds' % env.now)
+            # Wait for the tank truck to arrive and refuel the station tank
+            yield env.process(tank_truck(env, station_tank))
 
         yield env.timeout(10)  # Check every 10 seconds
 
 
-def tank_truck(env, fuel_pump):
+def tank_truck(env, station_tank):
     """Arrives at the gas station after a certain delay and refuels it."""
     yield env.timeout(TANK_TRUCK_TIME)
-    print('Tank truck arriving at time %d' % env.now)
-    amount = fuel_pump.capacity - fuel_pump.level
-    print('Tank truck refuelling %.1f liters.' % amount)
-    yield fuel_pump.put(amount)
+    print('Tank truck arrived at %.1f seconds' % env.now)
+    amount = station_tank.capacity - station_tank.level
+    yield station_tank.put(amount)
+    print('Tank truck refuelled station with %.1f liters.' % amount)
 
 
-def car_generator(env, gas_station, fuel_pump):
+def car_generator(env, gas_station, station_tank):
     """Generate new cars that arrive at the gas station."""
     for i in itertools.count():
         yield env.timeout(random.randint(*T_INTER))
-        env.process(car('Car %d' % i, env, gas_station, fuel_pump))
+        env.process(car('Car %d' % i, env, gas_station, station_tank))
 
 
 # Setup and start the simulation
@@ -96,9 +96,9 @@ random.seed(RANDOM_SEED)
 # Create environment and start processes
 env = simpy.Environment()
 gas_station = simpy.Resource(env, 2)
-fuel_pump = simpy.Container(env, GAS_STATION_SIZE, init=GAS_STATION_SIZE)
-env.process(gas_station_control(env, fuel_pump))
-env.process(car_generator(env, gas_station, fuel_pump))
+station_tank = simpy.Container(env, STATION_TANK_SIZE, init=STATION_TANK_SIZE)
+env.process(gas_station_control(env, station_tank))
+env.process(car_generator(env, gas_station, station_tank))
 
 # Execute!
 env.run(until=SIM_TIME)
