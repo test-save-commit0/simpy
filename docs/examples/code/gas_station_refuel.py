@@ -25,11 +25,11 @@ import simpy
 
 RANDOM_SEED = 42
 STATION_TANK_SIZE = 200    # Size of the gas station tank (liters)
-THRESHOLD = 25             # Station tank level threshold for calling the tank truck (% of full)
+THRESHOLD = 25             # Station tank minimum level (% of full)
 CAR_TANK_SIZE = 50         # Size of car fuel tanks (liters)
 CAR_TANK_LEVEL = [5, 25]   # Min/max levels of car fuel tanks (liters)
 REFUELING_SPEED = 2        # Rate of refuelling car fuel tank (liters / second)
-TANK_TRUCK_TIME = 300      # Time it takes the tank truck to arrive after being called (seconds)
+TANK_TRUCK_TIME = 300      # Time it takes tank truck to arrive (seconds)
 T_INTER = [30, 300]        # Interval between car arrivals [min, max] (seconds)
 SIM_TIME = 1000            # Simulation time (seconds)
 
@@ -45,7 +45,6 @@ def car(name, env, gas_station, station_tank):
     car_tank_level = random.randint(*CAR_TANK_LEVEL)
     print('%s arrived at gas station at %.1f seconds' % (name, env.now))
     with gas_station.request() as req:
-        start = env.now
         # Request one of the gas pumps
         yield req
 
