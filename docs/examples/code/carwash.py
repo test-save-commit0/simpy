@@ -12,7 +12,7 @@ Scenario:
 
   Car processes arrive at the carwash at a random time. If one washing
   machine is available, they start the washing process and wait for it
-  to finish. If not, they wait until they an use one.
+  to finish. If not, they wait until they can use one.
 
 """
 import random
@@ -44,7 +44,7 @@ class Carwash(object):
     def wash(self, car):
         """The washing processes. It takes a ``car`` processes and tries
         to clean it."""
-        yield self.env.timeout(WASHTIME)
+        yield self.env.timeout(self.washtime)
         print("Carwash removed %d%% of %s's dirt." %
               (random.randint(50, 99), car))
 
