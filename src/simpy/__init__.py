@@ -10,7 +10,7 @@ The following tables list all of the available components in this module.
 """
 from pkg_resources import get_distribution
 from pkgutil import extend_path
-from typing import List, Tuple, Type
+from typing import TYPE_CHECKING, List, Tuple, Type
 
 from simpy.core import Environment
 from simpy.rt import RealtimeEnvironment
@@ -22,8 +22,28 @@ from simpy.resources.container import Container
 from simpy.resources.store import (
     Store, PriorityItem, PriorityStore, FilterStore)
 
+__all__ = [
+    'AllOf',
+    'AnyOf',
+    'Container',
+    'Environment',
+    'Event',
+    'FilterStore',
+    'Interrupt',
+    'PreemptiveResource',
+    'PriorityItem',
+    'PriorityResource',
+    'PriorityStore',
+    'Process',
+    'RealtimeEnvironment',
+    'Resource',
+    'SimPyException',
+    'Store',
+    'Timeout',
+]
 
-def compile_toc(
+
+def _compile_toc(
     entries: Tuple[Tuple[str, Tuple[Type, ...]], ...],
     section_marker: str = '=',
 ) -> str:
@@ -40,7 +60,7 @@ def compile_toc(
     return toc
 
 
-toc = (
+_toc = (
     ('Environments', (
         Environment, RealtimeEnvironment,
     )),
@@ -56,10 +76,10 @@ toc = (
     )),
 )
 
-# Use the toc to keep the documentation and the implementation in sync.
+# Use the _toc to keep the documentation and the implementation in sync.
 if __doc__:
-    __doc__ = __doc__.format(toc=compile_toc(toc))
-__all__ = [obj.__name__ for section, objs in toc for obj in objs]
+    __doc__ = __doc__.format(toc=_compile_toc(_toc))
+    assert set(__all__) == {obj.__name__ for _, objs in _toc for obj in objs}
 
 __path__: List[str] = list(extend_path(__path__, __name__))
 __version__: str = get_distribution('simpy').version
