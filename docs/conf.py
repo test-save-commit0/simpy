@@ -23,7 +23,7 @@ import sphinx.builders.html
 import sphinx.builders.latex
 import sphinx.builders.texinfo
 import sphinx.builders.text
-import sphinx.ext.autodoc
+import sphinx.ext.autodoc  # noqa
 
 # This is used to allow the type checking stubs for various BoundClass methods
 # to be used in the Sphinx documentation in place of the true BoundClass
