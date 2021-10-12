@@ -41,6 +41,20 @@ python38:
     - python -m pip install tox
     - python -m tox -e py38
 
+python39:
+  image: python:3.9
+  stage: test
+  script:
+    - python -m pip install tox
+    - python -m tox -e py39
+
+python310:
+  image: python:3.10
+  stage: test
+  script:
+    - python -m pip install tox
+    - python -m tox -e py310
+
 pypy3:
   image: pypy:3
   stage: test
