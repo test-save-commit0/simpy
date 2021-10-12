@@ -10,7 +10,7 @@ The following tables list all of the available components in this module.
 """
 from pkg_resources import get_distribution
 from pkgutil import extend_path
-from typing import TYPE_CHECKING, List, Tuple, Type
+from typing import List, Tuple, Type
 
 from simpy.core import Environment
 from simpy.rt import RealtimeEnvironment
