@@ -120,8 +120,10 @@ There is also a generic way to trigger an event: ``Event.trigger(event)``.
 This will take the value and outcome (success or failure) of the event passed
 to it.
 
-All three methods return the event instance they are bound to. This allows you
+``Event.succeed`` and ``Event.fail`` methods return the event instance they are bound to. This allows you
 to do things like ``yield Event(env).succeed()``.
+
+``Event.trigger`` returns None.
 
 
 Example usages for ``Event``
