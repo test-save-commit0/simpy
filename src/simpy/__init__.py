@@ -10,7 +10,7 @@ The following tables list all of the available components in this module.
 """
 from pkg_resources import get_distribution
 from pkgutil import extend_path
-from typing import List, Tuple, Type
+from typing import Tuple, Type
 
 from simpy.core import Environment
 from simpy.rt import RealtimeEnvironment
@@ -81,5 +81,5 @@ if __doc__:
     __doc__ = __doc__.format(toc=_compile_toc(_toc))
     assert set(__all__) == {obj.__name__ for _, objs in _toc for obj in objs}
 
-__path__: List[str] = list(extend_path(__path__, __name__))
+__path__ = list(extend_path(__path__, __name__))
 __version__: str = get_distribution('simpy').version
