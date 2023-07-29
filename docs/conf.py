@@ -21,6 +21,7 @@ import typing
 # https://github.com/sphinx-doc/sphinx/issues/9243
 import sphinx.builders.html
 import sphinx.builders.latex
+import sphinx.builders.linkcheck
 import sphinx.builders.texinfo
 import sphinx.builders.text
 import sphinx.ext.autodoc  # noqa
@@ -253,9 +254,7 @@ man_pages = [
 
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {
-    'http://docs.python.org/3/': None,
-}
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
 
 # Autodoc
 autodoc_member_order = 'bysource'
