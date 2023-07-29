@@ -5,7 +5,6 @@
 
         Discrete event simulation for Python
 
-        `News <https://plus.google.com/101634625602509193865>`_ |
         `PyPI <https://pypi.python.org/pypi/simpy>`_ |
         `GitLab <https://gitlab.com/team-simpy/simpy/>`_ |
         `Issues
