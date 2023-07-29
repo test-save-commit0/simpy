@@ -10,6 +10,7 @@ a separate process. The output of this process is compared to the
 contents of the ``*.out`` file.
 
 """
+import pathlib
 import subprocess
 import sys
 
@@ -22,7 +23,7 @@ def pytest_collect_file(path, parent):
     """Checks if the file is a rst file and creates an
     :class:`ExampleFile` instance."""
     if path.ext == '.py' and path.dirname.endswith('code'):
-        return ExampleFile.from_parent(parent, fspath=path)
+        return ExampleFile.from_parent(parent, path=pathlib.Path(path.strpath))
 
 
 class ExampleFile(pytest.File):
