@@ -184,7 +184,7 @@ the number of current users and the resource's capacity:
 PriorityResource
 ----------------
 
-As you may know from the real world, not every one is equally important. To map
+As you may know from the real world, everything is not equally important. To map
 that to SimPy, there's the *PriorityResource*. This subclass of *Resource* lets
 requesting processes provide a priority for each request. More important
 requests will gain access to the resource earlier than less important ones.
