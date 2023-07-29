@@ -448,7 +448,7 @@ class ConditionValue:
     dict-like access to the triggered events and their values. The events are
     ordered by their occurences in the condition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.events: List[Event] = []
 
     def __getitem__(self, key: Event) -> Any:
