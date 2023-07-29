@@ -1,9 +1,9 @@
 """
 This module scans all ``*.rst`` files below ``docs/`` for example code.
-Example code is discoved by checking for lines containing the ``..
-literalinclude:: `` directives.
+Example code is discovered by checking for lines containing the ``..
+literals include:: `` directives.
 
-An example consists of two consecutive literalinclude directives. The
+An example consists of two consecutive literals include directives. The
 first must include a ``*.py`` file and the second a ``*.out`` file. The
 ``*.py`` file consists of the example code which is executed in
 a separate process. The output of this process is compared to the
@@ -65,7 +65,7 @@ class ExampleItem(pytest.Item):
             return ReprFailExample(self.pyfile, self.outfile, message)
 
         elif exc_info.errisinstance(subprocess.CalledProcessError):
-            # Something wrent wrong while executing the example.
+            # Something went wrong while executing the example.
             return ReprErrorExample(self.pyfile, exc_info)
 
         else:

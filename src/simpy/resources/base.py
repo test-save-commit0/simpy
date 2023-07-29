@@ -201,7 +201,7 @@ class BaseResource(Generic[PutType, GetType]):
 
         This method needs to be implemented by subclasses. If the conditions
         for the put *event* are met, the method must trigger the event (e.g.
-        call :meth:`Event.succeed()` with an apropriate value).
+        call :meth:`Event.succeed()` with an appropriate value).
 
         This method is called by :meth:`_trigger_put` for every event in the
         :attr:`put_queue`, as long as the return value does not evaluate
@@ -239,7 +239,7 @@ class BaseResource(Generic[PutType, GetType]):
 
         This method needs to be implemented by subclasses. If the conditions
         for the get *event* are met, the method must trigger the event (e.g.
-        call :meth:`Event.succeed()` with an apropriate value).
+        call :meth:`Event.succeed()` with an appropriate value).
 
         This method is called by :meth:`_trigger_get` for every event in the
         :attr:`get_queue`, as long as the return value does not evaluate

@@ -259,7 +259,7 @@ class Initialize(Event):
         self._value: Any = None
 
         # The initialization events needs to be scheduled as urgent so that it
-        # will be handled before interrupts. Otherwise a process whose
+        # will be handled before interrupts. Otherwise, a process whose
         # generator has not yet been started could be interrupted.
         self._ok = True
         env.schedule(self, URGENT)
@@ -331,7 +331,7 @@ class Process(Event):
             # Implementation note: Python implementations differ in the
             # generator types they provide. Cython adds its own generator type
             # in addition to the CPython type, which renders a type check
-            # impractical. To workaround this issue, we check for attribute
+            # impractical. To work around this issue, we check for attribute
             # name instead of type and optimistically assume that all objects
             # with a ``throw`` attribute are generators.
             # Remove this workaround if it causes issues in production!
@@ -356,7 +356,7 @@ class Process(Event):
     def target(self) -> Event:
         """The event that the process is currently waiting for.
 
-        Returns ``None`` if the process is dead or it is currently being
+        Returns ``None`` if the process is dead, or it is currently being
         interrupted.
 
         """
@@ -368,7 +368,7 @@ class Process(Event):
         return self._value is PENDING
 
     def interrupt(self, cause: Optional[Any] = None) -> None:
-        """Interupt this process optionally providing a *cause*.
+        """Interrupt this process optionally providing a *cause*.
 
         A process cannot be interrupted if it already terminated. A process can
         also not interrupt itself. Raise a :exc:`RuntimeError` in these
@@ -446,7 +446,7 @@ class Process(Event):
 class ConditionValue:
     """Result of a :class:`~simpy.events.Condition`. It supports convenient
     dict-like access to the triggered events and their values. The events are
-    ordered by their occurences in the condition."""
+    ordered by their occurrences in the condition."""
 
     def __init__(self):
         self.events: List[Event] = []

@@ -110,7 +110,7 @@ By default, ``now`` starts at 0, but you can pass an ``initial_time`` to the
 
 .. note::
 
-   Although the simulation time is technically unitless, you can pretend that
+   Although the simulation time is technically unit-less, you can pretend that
    it is, for example, in seconds and use it like a timestamp returned by
    :func:`time.time()` to calculate a date or the day of the week.
 

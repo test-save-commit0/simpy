@@ -1,5 +1,5 @@
 """
-SimPy specific exeptions.
+SimPy specific exceptions.
 
 """
 from typing import Any, Optional

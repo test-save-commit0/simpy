@@ -45,7 +45,7 @@ def test_environment_step(env, benchmark):
 @pytest.mark.benchmark(group='targeted')
 def test_condition_events(env, benchmark):
     def cond_proc(env):
-        yield (env.timeout(0) & (env.timeout(2) | env.timeout(1)))
+        yield env.timeout(0) & (env.timeout(2) | env.timeout(1))
 
     def sim():
         for _ in range(20):

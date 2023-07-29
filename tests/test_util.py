@@ -48,7 +48,7 @@ def test_subscribe(env):
 
 
 def test_subscribe_terminated_proc(env):
-    """subscribe() proc should send a singal immediatly if
+    """subscribe() proc should send a signal immediately if
     "other" has already terminated.
 
     """
@@ -294,7 +294,7 @@ def test_any_of_with_triggered_events(env):
 
 
 def test_empty_any_of(env):
-    """AnyOf will triggered immediately if there are no events."""
+    """AnyOf will trigger immediately if there are no events."""
     def parent(env):
         results = yield env.any_of([])
         assert results == {}
@@ -304,7 +304,7 @@ def test_empty_any_of(env):
 
 
 def test_empty_all_of(env):
-    """AllOf will triggered immediately if there are no events."""
+    """AllOf will trigger immediately if there are no events."""
     def parent(env):
         results = yield env.all_of([])
         assert results == {}

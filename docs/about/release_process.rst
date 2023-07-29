@@ -12,7 +12,7 @@ Preparations
 #. Close all `tickets for the next version
    <https://gitlab.com/team-simpy/simpy/-/issues>`_.
 
-#. Update the *minium* required versions of dependencies in :file:`setup.cfg`.
+#. Update the *minimum* required versions of dependencies in :file:`setup.cfg`.
    Update the development dependencies in :file:`requirements-dev.txt`.
 
 #. Run :command:`tox` from the project root. All tests for all supported

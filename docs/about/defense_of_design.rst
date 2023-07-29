@@ -24,7 +24,7 @@ package.
 The simulation itself was executed via module level functions. The simulation
 state was stored in the global scope. This made it very easy to implement and
 execute a simulation (despite from having to inherit from *Process* and
-instantianting the processes before starting their PEMs). However, having all
+instantiating the processes before starting their PEMs). However, having all
 simulation state global makes it hard to parallelize multiple simulations.
 
 SimPy 1 also followed the "batteries included" approach, providing shared
@@ -59,7 +59,7 @@ in SimPy 1:
 Changes in SimPy 2
 ==================
 
-SimPy 2 mostly sticked with SimPy 1's design, but added an object orient API
+SimPy 2 mostly stuck with SimPy 1's design, but added an object orient API
 for the execution of simulations, allowing them to be executed in parallel.
 Since processes and the simulation state were so closely coupled, you now
 needed to pass the ``Simulation`` instance into your process to "bind" them to
@@ -222,5 +222,5 @@ respectively):
             self.event = types.MethodType(Event, self)
 
 It turned out the the class attributes (the ``BoundClass`` instances) were now
-quite useless, so we removed them allthough it was actually the "right" way to
+quite useless, so we removed them although it was actually the "right" way to
 to add classes as methods to another class.

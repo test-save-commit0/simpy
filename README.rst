@@ -130,7 +130,7 @@ Enjoy simulation programming in SimPy!
 Ports and comparable libraries
 ------------------------------
 
-Reimplementations of SimPy and libraries similar to SimPy are available in the
+Re-implementations of SimPy and libraries similar to SimPy are available in the
 following languages:
 
 - C#: `SimSharp <https://github.com/abeham/SimSharp>`_ (written by Andreas Beham)

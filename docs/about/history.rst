@@ -123,7 +123,7 @@ Documentation format changes
 
 SimPy's documentation has been restructured and processed by the Sphinx
 documentation generation tool. This has generated one coherent, well
-structured document which can be easily browsed. A seach capability is included.
+structured document which can be easily browsed. A search capability is included.
 
 
 March 2008: Version 1.9.1
@@ -135,7 +135,7 @@ This is a bug-fix release which cures the following bugs:
   between Process instances and event notices. This led to large memory
   requirements.
 
-- Runtime error for preempts of proceeses holding multiple Resource objects.
+- Runtime error for preempts of processes holding multiple Resource objects.
 
 It also adds a Short Manual, describing only the basic facilities of SimPy.
 
@@ -271,7 +271,7 @@ This is a major release.
 - The Manual has undergone a major re-write/edit.
 
 - All scripts have been restructured for compatibility with IronPython 1 beta2.
-  This was doen by moving all *import* statements to the beginning of the
+  This was done by moving all *import* statements to the beginning of the
   scripts. After the removal of the first (shebang) line, all scripts (with the
   exception of plotting and GUI scripts) can run successfully under this new
   Python implementation.
@@ -496,7 +496,7 @@ June 2003: Version 1.3 alpha
 
 * Version 0.2 Alpha-release, intended to attract feedback from users
 * Extended list of models
-* Upodated documentation
+* Updated documentation
 
 17 September 2002
 -----------------
