@@ -44,7 +44,7 @@ class Carwash(object):
     def wash(self, car):
         """The washing processes. It takes a ``car`` processes and tries
         to clean it."""
-        yield self.env.timeout(WASHTIME)
+        yield self.env.timeout(self.washtime)
         print("Carwash removed %d%% of %s's dirt." %
               (random.randint(50, 99), car))
 
