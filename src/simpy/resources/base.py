@@ -150,13 +150,13 @@ class BaseResource(Generic[PutType, GetType]):
 
     """
 
-    PutQueue: ClassVar[Type[MutableSequence[PutType]]] = list
+    PutQueue: ClassVar[Type[MutableSequence]] = list
     """The type to be used for the :attr:`put_queue`. It is a plain
     :class:`list` by default. The type must support index access (e.g.
     ``__getitem__()`` and ``__len__()``) as well as provide ``append()`` and
     ``pop()`` operations."""
 
-    GetQueue: ClassVar[Type[MutableSequence[GetType]]] = list
+    GetQueue: ClassVar[Type[MutableSequence]] = list
     """The type to be used for the :attr:`get_queue`. It is a plain
     :class:`list` by default. The type must support index access (e.g.
     ``__getitem__()`` and ``__len__()``) as well as provide ``append()`` and
@@ -165,9 +165,9 @@ class BaseResource(Generic[PutType, GetType]):
     def __init__(self, env: Environment, capacity: Union[float, int]):
         self._env = env
         self._capacity = capacity
-        self.put_queue = self.PutQueue()
+        self.put_queue: MutableSequence[PutType] = self.PutQueue()
         """Queue of pending *put* requests."""
-        self.get_queue = self.GetQueue()
+        self.get_queue: MutableSequence[GetType] = self.GetQueue()
         """Queue of pending *get* requests."""
 
         # Bind event constructors as methods
