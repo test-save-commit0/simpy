@@ -3,7 +3,7 @@ Shared resources supporting priorities and preemption.
 
 These resources can be used to limit the number of processes using them
 concurrently. A process needs to *request* the usage right to a resource. Once
-the usage right is not needed anymore it has to be *released*. A gas station
+the usage right is not needed any more it has to be *released*. A gas station
 can be modelled as a resource with a limited amount of fuel-pumps. Vehicles
 arrive at the gas station and request to use a fuel-pump. If all fuel-pumps are
 in use, the vehicle needs to wait until one of the users has finished refueling
@@ -37,7 +37,7 @@ from simpy.resources import base
 
 
 class Preempted:
-    """Cause of an preemption :class:`~simpy.exceptions.Interrupt` containing
+    """Cause of a preemption :class:`~simpy.exceptions.Interrupt` containing
     information about the preemption.
 
     """
@@ -84,7 +84,7 @@ class Request(base.Put):
     ) -> Optional[bool]:
         super().__exit__(exc_type, exc_value, traceback)
         # Don't release the resource on generator cleanups. This seems to
-        # create unclaimable circular references otherwise.
+        # create un-claimable circular references otherwise.
         if exc_type is not GeneratorExit:
             self.resource.release(self)
         return None

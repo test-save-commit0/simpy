@@ -221,7 +221,7 @@ that a timeout has happened. Therefore ``hold`` has been replaced by a
     yield resource.request()           # Request is now bound to class Resource
     resource.release()                 # Release no longer needs to be yielded
     yield event                        # waitevent: just yield the event
-    yield env.all_of([event_a, event_b, event_c])  # waitvent
+    yield env.all_of([event_a, event_b, event_c])  # waitevent
     yield env.any_of([event_a, event_b, event_c])  # queuevent
     yield container.get(amount)        # Level is now called Container
     yield container.put(amount)

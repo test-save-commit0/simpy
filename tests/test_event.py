@@ -74,7 +74,7 @@ def test_value(env):
 
 
 def test_unavailable_value(env):
-    """If an event has not yet been triggered, its value is not availabe and
+    """If an event has not yet been triggered, its value is not available and
     trying to access it will result in a AttributeError."""
     event = env.event()
 

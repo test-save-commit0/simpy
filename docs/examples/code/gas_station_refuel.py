@@ -38,7 +38,7 @@ def car(name, env, gas_station, fuel_pump):
     """A car arrives at the gas station for refueling.
 
     It requests one of the gas station's fuel pumps and tries to get the
-    desired amount of gas from it. If the stations reservoir is
+    desired amount of gas from it. If the station's reservoir is
     depleted, the car has to wait for the tank truck to arrive.
 
     """
@@ -77,9 +77,9 @@ def tank_truck(env, fuel_pump):
     """Arrives at the gas station after a certain delay and refuels it."""
     yield env.timeout(TANK_TRUCK_TIME)
     print('Tank truck arriving at time %d' % env.now)
-    ammount = fuel_pump.capacity - fuel_pump.level
-    print('Tank truck refuelling %.1f liters.' % ammount)
-    yield fuel_pump.put(ammount)
+    amount = fuel_pump.capacity - fuel_pump.level
+    print('Tank truck refuelling %.1f liters.' % amount)
+    yield fuel_pump.put(amount)
 
 
 def car_generator(env, gas_station, fuel_pump):

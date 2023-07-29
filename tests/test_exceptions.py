@@ -173,7 +173,7 @@ def test_callback_exception_handling(env):
 
 
 def test_process_exception_handling(env):
-    """Processes can't ignore failed events and auto-handle execeptions."""
+    """Processes can't ignore failed events and auto-handle exceptions."""
     def pem(env, event):
         try:
             yield event
@@ -252,6 +252,6 @@ def test_sys_excepthook(env):
         sys.stderr = stderr
 
         # Check if frames of process_a and process_b are visible in the
-        # tracebabck.
+        # traceback.
         assert 'process_a' in traceback
         assert 'process_b' in traceback

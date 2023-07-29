@@ -23,5 +23,5 @@ you are looking for.
    porting_from_simpy3
    porting_from_simpy2
 
-.. - analyzing results (numpy, matploblib, ...)
+.. - analyzing results (numpy, matplotlib, ...)
 .. - integration with guis

@@ -38,7 +38,7 @@ def moviegoer(env, movie, num_tickets, theater):
 
     """
     with theater.counter.request() as my_turn:
-        # Wait until its our turn or until the movie is sold out
+        # Wait until it's our turn or until the movie is sold out
         result = yield my_turn | theater.sold_out[movie]
 
         # Check if it's our turn or if movie is sold out

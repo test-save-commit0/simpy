@@ -68,7 +68,7 @@ or return a value *must* use the ``return`` Python keyword.
 
 Once a SimPy 3 application is ported to run with Python 3, it may then replace
 any uses of ``Environment.exit(value)`` and ``raise StopProcess(value)`` with
-``return value``. Once all occurences are changed, the application will be ready
+``return value``. Once all occurrences are changed, the application will be ready
 to run with SimPy 4.
 
 Example: Return from Generator
@@ -89,7 +89,7 @@ the only way to return a value from a process generator.
    def proc(env, store):
        needle = yield env.process(find_first_needle(env, store))
 
-In SimPy 4 or whith SimPy 3 and Python 3, ``find_first_needle()`` can be
+In SimPy 4 or with SimPy 3 and Python 3, ``find_first_needle()`` can be
 rewritten as:
 
 .. code-block:: python

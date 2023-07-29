@@ -3,7 +3,7 @@ The ``simpy`` module aggregates SimPy's most used components into a single
 namespace. This is purely for convenience. You can of course also access
 everything (and more!) via their actual submodules.
 
-The following tables list all of the available components in this module.
+The following tables list all the available components in this module.
 
 {toc}
 

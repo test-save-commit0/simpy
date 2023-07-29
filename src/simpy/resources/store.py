@@ -113,7 +113,7 @@ class Store(base.BaseResource):
 
 
 class PriorityItem(NamedTuple):
-    """Wrap an arbitrary *item* with an orderable *priority*.
+    """Wrap an arbitrary *item* with an order-able *priority*.
 
     Pairs a *priority* with an arbitrary *item*. Comparisons of *PriorityItem*
     instances only consider the *priority* attribute, thus supporting use of
@@ -138,9 +138,9 @@ class PriorityStore(Store):
 
     Unlike :class:`Store` which provides first-in first-out discipline,
     :class:`PriorityStore` maintains items in sorted order such that
-    the smallest items value are retreived first from the store.
+    the smallest items value are retrieved first from the store.
 
-    All items in a *PriorityStore* instance must be orderable; which is to say
+    All items in a *PriorityStore* instance must be order-able; which is to say
     that items must implement :meth:`~object.__lt__()`. To use unorderable
     items with *PriorityStore*, use :class:`PriorityItem`.
 

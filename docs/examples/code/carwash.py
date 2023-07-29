@@ -12,7 +12,7 @@ Scenario:
 
   Car processes arrive at the carwash at a random time. If one washing
   machine is available, they start the washing process and wait for it
-  to finish. If not, they wait until they an use one.
+  to finish. If not, they wait until they can use one.
 
 """
 import random
@@ -87,7 +87,7 @@ def setup(env, num_machines, washtime, t_inter):
 # Setup and start the simulation
 print('Carwash')
 print('Check out http://youtu.be/fXXmeP9TvBg while simulating ... ;-)')
-random.seed(RANDOM_SEED)  # This helps reproducing the results
+random.seed(RANDOM_SEED)  # This helps to reproduce the results
 
 # Create an environment and start the setup process
 env = simpy.Environment()

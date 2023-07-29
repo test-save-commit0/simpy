@@ -108,7 +108,7 @@ def test_resource_continue_after_interrupt(env):
 
 
 def test_resource_release_after_interrupt(env):
-    """A process needs to release a resource, even it it was interrupted
+    """A process needs to release a resource, even if it was interrupted
     and does not continue to wait for it."""
     def blocker(env, res):
         with res.request() as req:
@@ -121,7 +121,7 @@ def test_resource_release_after_interrupt(env):
             yield evt
             pytest.fail('Should not have gotten the resource.')
         except simpy.Interrupt:
-            # Dont wait for the resource
+            # Don't wait for the resource
             res.release(evt)
             assert env.now == 0
 
@@ -393,12 +393,12 @@ def test_nested_preemption(env, log):
 
 
 def test_container(env, log):
-    """A *container* is a resource (of optinally limited capacity) where
-    you can put in our take out a discrete or continuous amount of
+    """A *container* is a resource (of optionally limited capacity) where
+    you can put in our take-out a discrete or continuous amount of
     things (e.g., a box of lump sugar or a can of milk).  The *put* and
     *get* operations block if the buffer is to full or to empty. If they
-    return, the process nows that the *put* or *get* operation was
-    successfull.
+    return, the process knows that the *put* or *get* operation was
+    successful.
 
     """
     def putter(env, buf, log):
@@ -460,7 +460,7 @@ def test_container_get_put_bounds(env):
     (None, [2, 1]),  # normal case
     (None, [1, 1]),  # init == capacity should be valid
     (None, [1, 0]),  # init == 0 should be valid
-    (ValueError, [1, 2]),  # init > capcity
+    (ValueError, [1, 2]),  # init > capacity
     (ValueError, [0]),  # capacity == 0
     (ValueError, [-1]),  # capacity < 0
     (ValueError, [1, -1]),  # init < 0
@@ -481,7 +481,7 @@ def test_container_init_capacity(env, error, args):
 def test_store(env):
     """A store models the production and consumption of concrete python
     objects (in contrast to containers, where you only now if the *put*
-    or *get* operations were successfull but don't get concrete
+    or *get* operations were successful but don't get concrete
     objects).
 
     """

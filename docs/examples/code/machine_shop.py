@@ -11,7 +11,7 @@ Scenario:
   keep the machines busy) arrives. Each machine breaks down
   periodically. Repairs are carried out by one repairman. The repairman
   has other, less important tasks to perform, too. Broken machines
-  preempt theses tasks. The repairman continues them when he is done
+  preempt these tasks. The repairman continues them when he is done
   with the machine repair. The workshop works continuously.
 
 """
@@ -48,7 +48,7 @@ class Machine(object):
     If it breaks, it requests a *repairman* and continues the production
     after the it is repaired.
 
-    A machine has a *name* and a numberof *parts_made* thus far.
+    A machine has a *name* and a number of *parts_made* thus far.
 
     """
     def __init__(self, env, name, repairman):
@@ -108,7 +108,7 @@ def other_jobs(env, repairman):
         done_in = JOB_DURATION
         while done_in:
             # Retry the job until it is done.
-            # It's priority is lower than that of machine repairs.
+            # Its priority is lower than that of machine repairs.
             with repairman.request(priority=2) as req:
                 yield req
                 try:
@@ -121,7 +121,7 @@ def other_jobs(env, repairman):
 
 # Setup and start the simulation
 print('Machine shop')
-random.seed(RANDOM_SEED)  # This helps reproducing the results
+random.seed(RANDOM_SEED)  # This helps to reproduce the results
 
 # Create an environment and start the setup process
 env = simpy.Environment()
@@ -133,7 +133,7 @@ env.process(other_jobs(env, repairman))
 # Execute!
 env.run(until=SIM_TIME)
 
-# Analyis/results
+# Analysis/results
 print('Machine shop results after %s weeks' % WEEKS)
 for machine in machines:
     print('%s made %d parts.' % (machine.name, machine.parts_made))

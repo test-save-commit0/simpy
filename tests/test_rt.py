@@ -94,7 +94,7 @@ def test_rt_sync(log):
     """Test resetting the internal wall-clock reference time."""
     env = RealtimeEnvironment(factor=0.05)
     env.process(process(env, log, 0.01))
-    sleep(0.06)  # Simulate massiv workload :-)
+    sleep(0.06)  # Simulate massive workload :-)
     env.sync()
     env.run(3)
 
