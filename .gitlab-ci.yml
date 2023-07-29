@@ -55,6 +55,13 @@ python310:
     - python -m pip install tox
     - python -m tox -e py310
 
+python311:
+  image: python:3.11
+  stage: test
+  script:
+    - python -m pip install tox
+    - python -m tox -e py311
+
 pypy3:
   image: pypy:3
   stage: test
