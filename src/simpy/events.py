@@ -363,7 +363,7 @@ class Process(Event):
 
     @property
     def name(self) -> str:
-        """Return the name of the function used to start the process."""
+        """Name of the function used to start the process."""
         return self._generator.__name__  # type: ignore
 
     @property
