@@ -15,15 +15,15 @@ Processes are described by simple Python `generators
 <http://docs.python.org/3/reference/expressions.html#yieldexpr>`_. You can call
 them *process function* or *process method*, depending on whether it is
 a normal function or method of a class. During their lifetime, they create
-events and ``yield`` them in order to wait for them to be triggered.
+events and ``yield`` them in order to wait for them to occur.
 
 When a process yields an event, the process gets *suspended*. SimPy *resumes*
-the process, when the event occurs (we say that the event is *triggered*).
+the process, when the event occurs (we say that the event is *processed*).
 Multiple processes can wait for the same event. SimPy resumes them in the same
 order in which they yielded that event.
 
 An important event type is the :class:`~simpy.events.Timeout`. Events of this
-type are triggered after a certain amount of (simulated) time has passed. They
+type occur (are processed) after a certain amount of (simulated) time has passed. They
 allow a process to sleep (or hold its state) for the given time.
 A :class:`~simpy.events.Timeout` and all other events can be created by calling
 the appropriate method of the :class:`Environment` that the process lives in
@@ -53,7 +53,7 @@ Our *car* process requires a reference to an :class:`Environment` (``env``) in
 order to create new events. The *car*'s behavior is described in an infinite
 loop. Remember, this function is a generator. Though it will never terminate,
 it will pass the control flow back to the simulation once a ``yield`` statement
-is reached. Once the yielded event is triggered ("it occurs"), the simulation
+is reached. Once the yielded event is processed ("it occurs"), the simulation
 will resume the function at this statement.
 
 As I said before, our car switches between the states *parking* and *driving*.
