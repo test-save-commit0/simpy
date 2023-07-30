@@ -213,7 +213,7 @@ EventCallbacks = List[EventCallback]
 
 
 class Timeout(Event):
-    """A :class:`~simpy.events.Event` that gets triggered after a *delay* has
+    """A :class:`~simpy.events.Event` that gets processed after a *delay* has
     passed.
 
     This event is automatically triggered when it is created.
