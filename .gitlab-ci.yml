@@ -78,6 +78,7 @@ doctest:
 sphinx:
   stage: test
   script:
+    - python -m pip install tox
     - python -m tox -e sphinx
 
 flake8:
