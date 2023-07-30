@@ -23,8 +23,8 @@ Multiple processes can wait for the same event. SimPy resumes them in the same
 order in which they yielded that event.
 
 An important event type is the :class:`~simpy.events.Timeout`. Events of this
-type occur (are processed) after a certain amount of (simulated) time has passed. They
-allow a process to sleep (or hold its state) for the given time.
+type occur (are processed) after a certain amount of (simulated) time has
+passed. They allow a process to sleep (or hold its state) for the given time.
 A :class:`~simpy.events.Timeout` and all other events can be created by calling
 the appropriate method of the :class:`Environment` that the process lives in
 (:meth:`Environment.timeout()` for example).
