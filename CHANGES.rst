@@ -1,6 +1,22 @@
 Changelog for SimPy
 ===================
 
+4.0.2 - 2023-07-30
+------------------
+
+- [CHANGE] Tested with Python 3.9, 3.10, and 3.11
+- [CHANGE] Improved docs w.r.t. triggered and processed events
+- [CHANGE] Improved gas station example
+- [FIX] ClassVar annotations in BaseResource
+- [FIX] Documentation typos
+- [FIX] Help static analyzers find exported symbols
+- [FIX] ``license_file`` deprecation in setup.cfg
+- [FIX] Do not re-annotate type of ``__path__``
+- [FIX] Annotate ``ConditionValue.__init__()`` return value
+- [FIX] Unbreak docs build by updating to Sphinx 6.2.1
+- [FIX] Workaround Sphinx circular import problem
+
+
 4.0.1 - 2020-04-15
 ------------------
 
