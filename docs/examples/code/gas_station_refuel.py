@@ -25,7 +25,7 @@ import simpy
 
 RANDOM_SEED = 42
 GAS_STATION_SIZE = 200     # liters
-THRESHOLD = 10             # Threshold for calling the tank truck (in %)
+THRESHOLD = 25             # Threshold for calling the tank truck (in %)
 FUEL_TANK_SIZE = 50        # liters
 FUEL_TANK_LEVEL = [5, 25]  # Min/max levels of fuel tanks (in liters)
 REFUELING_SPEED = 2        # liters / second
