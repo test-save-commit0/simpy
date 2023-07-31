@@ -8,6 +8,7 @@ retrieved from the store in the order they were put in. The *get* requests of a
 matching a given criterion.
 
 """
+from __future__ import annotations
 from heapq import heappush, heappop
 from typing import (
     TYPE_CHECKING,
@@ -29,7 +30,7 @@ class StorePut(base.Put):
 
     """
 
-    def __init__(self, store: 'Store', item: Any):
+    def __init__(self, store: Store, item: Any):
         self.item = item
         """The item to put into the store."""
         super().__init__(store)
@@ -55,7 +56,7 @@ class FilterStoreGet(StoreGet):
 
     def __init__(
         self,
-        resource: 'FilterStore',
+        resource: FilterStore,
         filter: Callable[[Any], bool] = lambda item: True,
     ):
         self.filter = filter
@@ -128,7 +129,7 @@ class PriorityItem(NamedTuple):
     item: Any
 
     def __lt__(  # type: ignore[override] # noqa: F821
-        self, other: 'PriorityItem'
+        self, other: PriorityItem
     ) -> bool:
         return self.priority < other.priority
 

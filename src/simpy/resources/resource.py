@@ -28,6 +28,7 @@ processes can define a request priority, and a :class:`PreemptiveResource`
 whose resource users can be preempted by requests with a higher priority.
 
 """
+from __future__ import annotations
 from types import TracebackType
 from typing import TYPE_CHECKING, Any, List, Optional, Type
 
@@ -46,7 +47,7 @@ class Preempted:
         self,
         by: Optional[Process],
         usage_since: Optional[SimTime],
-        resource: 'Resource',
+        resource: Resource,
     ):
         self.by = by
         """The preempting :class:`simpy.events.Process`."""
@@ -71,7 +72,7 @@ class Request(base.Put):
 
     """
 
-    resource: 'Resource'
+    resource: Resource
 
     #: The time at which the request succeeded.
     usage_since: Optional[SimTime] = None
@@ -96,7 +97,7 @@ class Release(base.Get):
 
     """
 
-    def __init__(self, resource: 'Resource', request: Request):
+    def __init__(self, resource: Resource, request: Request):
         self.request = request
         """The request (:class:`Request`) that is to be released."""
         super().__init__(resource)
@@ -115,7 +116,7 @@ class PriorityRequest(Request):
     """
 
     def __init__(
-        self, resource: 'Resource', priority: int = 0, preempt: bool = True
+        self, resource: Resource, priority: int = 0, preempt: bool = True
     ):
         self.priority = priority
         """The priority of this request. A smaller number means higher

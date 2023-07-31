@@ -6,6 +6,7 @@ Base classes of for SimPy's shared resource types.
 These events are triggered once the request has been completed.
 
 """
+from __future__ import annotations
 from types import TracebackType
 from typing import (
     TYPE_CHECKING,
@@ -49,7 +50,7 @@ class Put(Event, ContextManager['Put'], Generic[ResourceType]):
         self.callbacks.append(resource._trigger_get)
         resource._trigger_put(None)
 
-    def __enter__(self) -> 'Put':
+    def __enter__(self) -> Put:
         return self
 
     def __exit__(
@@ -100,7 +101,7 @@ class Get(Event, ContextManager['Get'], Generic[ResourceType]):
         self.callbacks.append(resource._trigger_put)
         resource._trigger_get(None)
 
-    def __enter__(self) -> 'Get':
+    def __enter__(self) -> Get:
         return self
 
     def __exit__(

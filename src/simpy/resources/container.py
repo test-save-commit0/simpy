@@ -7,6 +7,7 @@ Tankers increase and refuelled cars decrease the amount of gas in the station's
 fuel tanks.
 
 """
+from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Union
 
 from simpy.core import BoundClass, Environment
@@ -24,7 +25,7 @@ class ContainerPut(base.Put):
 
     """
 
-    def __init__(self, container: 'Container', amount: ContainerAmount):
+    def __init__(self, container: Container, amount: ContainerAmount):
         if amount <= 0:
             raise ValueError(f'amount(={amount}) must be > 0.')
         self.amount = amount
@@ -41,7 +42,7 @@ class ContainerGet(base.Get):
 
     """
 
-    def __init__(self, container: 'Container', amount: ContainerAmount):
+    def __init__(self, container: Container, amount: ContainerAmount):
         if amount <= 0:
             raise ValueError(f'amount(={amount}) must be > 0.')
         self.amount = amount

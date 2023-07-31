@@ -2,6 +2,7 @@
 Core components for event-discrete simulation environments.
 
 """
+from __future__ import annotations
 from heapq import heappush, heappop
 from itertools import count
 from types import MethodType
@@ -50,8 +51,8 @@ class BoundClass(Generic[T]):
 
     def __get__(
         self,
-        instance: Optional['BoundClass'],
-        owner: Optional[Type['BoundClass']] = None,
+        instance: Optional[BoundClass],
+        owner: Optional[Type[BoundClass]] = None,
     ) -> Union[Type[T], MethodType]:
         if instance is None:
             return self.cls

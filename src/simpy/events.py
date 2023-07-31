@@ -13,6 +13,7 @@ used, there are several specialized subclasses of it.
     ~simpy.events.AllOf
 
 """
+from __future__ import annotations
 from types import FrameType
 from typing import (
     TYPE_CHECKING,
@@ -79,7 +80,7 @@ class Event:
     _defused: bool
     _value: Any = PENDING
 
-    def __init__(self, env: 'Environment'):
+    def __init__(self, env: Environment):
         self.env = env
         """The :class:`~simpy.core.Environment` the event lives in."""
         self.callbacks: EventCallbacks = []
@@ -151,7 +152,7 @@ class Event:
             raise AttributeError(f'Value of {self} is not yet available')
         return self._value
 
-    def trigger(self, event: 'Event') -> None:
+    def trigger(self, event: Event) -> None:
         """Trigger the event with the state and value of the provided *event*.
         Return *self* (this event instance).
 
@@ -163,7 +164,7 @@ class Event:
         self._value = event._value
         self.env.schedule(self)
 
-    def succeed(self, value: Optional[Any] = None) -> 'Event':
+    def succeed(self, value: Optional[Any] = None) -> Event:
         """Set the event's value, mark it as successful and schedule it for
         processing by the environment. Returns the event instance.
 
@@ -178,7 +179,7 @@ class Event:
         self.env.schedule(self)
         return self
 
-    def fail(self, exception: Exception) -> 'Event':
+    def fail(self, exception: Exception) -> Event:
         """Set *exception* as the events value, mark it as failed and schedule
         it for processing by the environment. Returns the event instance.
 
@@ -196,12 +197,12 @@ class Event:
         self.env.schedule(self)
         return self
 
-    def __and__(self, other: 'Event') -> 'Condition':
+    def __and__(self, other: Event) -> Condition:
         """Return a :class:`~simpy.events.Condition` that will be triggered if
         both, this event and *other*, have been processed."""
         return Condition(self.env, Condition.all_events, [self, other])
 
-    def __or__(self, other: 'Event') -> 'Condition':
+    def __or__(self, other: Event) -> Condition:
         """Return a :class:`~simpy.events.Condition` that will be triggered if
         either this event or *other* have been processed (or even both, if they
         happened concurrently)."""
@@ -223,8 +224,8 @@ class Timeout(Event):
 
     def __init__(
         self,
-        env: 'Environment',
-        delay: 'SimTime',
+        env: Environment,
+        delay: SimTime,
         value: Optional[Any] = None,
     ):
         if delay < 0:
@@ -251,7 +252,7 @@ class Initialize(Event):
 
     """
 
-    def __init__(self, env: 'Environment', process: 'Process'):
+    def __init__(self, env: Environment, process: Process):
         # NOTE: The following initialization code is inlined from
         # Event.__init__() for performance reasons.
         self.env = env
@@ -273,7 +274,7 @@ class Interruption(Event):
 
     """
 
-    def __init__(self, process: 'Process', cause: Optional[Any]):
+    def __init__(self, process: Process, cause: Optional[Any]):
         # NOTE: The following initialization code is inlined from
         # Event.__init__() for performance reasons.
         self.env = process.env
@@ -326,7 +327,7 @@ class Process(Event):
 
     """
 
-    def __init__(self, env: 'Environment', generator: ProcessGenerator):
+    def __init__(self, env: Environment, generator: ProcessGenerator):
         if not hasattr(generator, 'throw'):
             # Implementation note: Python implementations differ in the
             # generator types they provide. Cython adds its own generator type
@@ -515,7 +516,7 @@ class Condition(Event):
 
     def __init__(
         self,
-        env: 'Environment',
+        env: Environment,
         evaluate: Callable[[Tuple[Event, ...], int], bool],
         events: Iterable[Event],
     ):
@@ -626,7 +627,7 @@ class AllOf(Condition):
 
     """
 
-    def __init__(self, env: 'Environment', events: Iterable[Event]):
+    def __init__(self, env: Environment, events: Iterable[Event]):
         super().__init__(env, Condition.all_events, events)
 
 
@@ -637,7 +638,7 @@ class AnyOf(Condition):
 
     """
 
-    def __init__(self, env: 'Environment', events: Iterable[Event]):
+    def __init__(self, env: Environment, events: Iterable[Event]):
         super().__init__(env, Condition.any_events, events)
 
 
