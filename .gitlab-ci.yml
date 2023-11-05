@@ -8,6 +8,7 @@ stages:
 build:
   stage: build
   script:
+    - python -m pip install build
     - python -m build
     - python -m pip install dist/*.tar.gz
     - python -c 'import simpy; print(simpy.__version__)'
