@@ -48,6 +48,13 @@ python311:
     - python -m pip install tox
     - python -m tox -e py311
 
+python312:
+  image: python:3.12
+  stage: test
+  script:
+    - python -m pip install tox
+    - python -m tox -e py312
+
 pypy3:
   image: pypy:3
   stage: test
