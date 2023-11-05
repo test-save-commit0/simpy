@@ -23,8 +23,6 @@ Preparations
     $ tox
     [...]
     ________ summary ________
-    py36: commands succeeded
-    py37: commands succeeded
     py38: commands succeeded
     pypy3: commands succeeded
     docs: commands succeeded

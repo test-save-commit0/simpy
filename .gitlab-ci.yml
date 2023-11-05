@@ -20,20 +20,6 @@ build:
     paths:
       - dist
 
-python36:
-  image: python:3.6
-  stage: test
-  script:
-    - python -m pip install tox
-    - python -m tox -e py36
-
-python37:
-  image: python:3.7
-  stage: test
-  script:
-    - python -m pip install tox
-    - python -m tox -e py37
-
 python38:
   image: python:3.8
   stage: test
