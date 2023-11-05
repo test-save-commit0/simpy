@@ -84,7 +84,7 @@ if __doc__:
 __path__ = list(extend_path(__path__, __name__))
 
 try:
-    __version__ = importlib.metadata.version("package-name")
+    __version__ = importlib.metadata.version("simpy")
 except importlib.metadata.PackageNotFoundError:
     # package is not installed
     pass
