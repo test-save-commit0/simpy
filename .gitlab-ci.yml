@@ -8,11 +8,10 @@ stages:
 build:
   stage: build
   script:
-    - python setup.py sdist
+    - python -m build
     - python -m pip install dist/*.tar.gz
     - python -c 'import simpy; print(simpy.__version__)'
     - python -m pip uninstall --yes --quiet simpy
-    - python setup.py bdist_wheel
     - python -m pip install dist/*.whl
     - python -c 'import simpy; print(simpy.__version__)'
     - python -m pip uninstall --yes --quiet simpy

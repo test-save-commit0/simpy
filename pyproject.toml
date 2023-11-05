@@ -1,10 +1,48 @@
 [build-system]
 requires = [
-    "setuptools>=42",
-    "setuptools_scm[toml]>=3.4",
-    "wheel",
+    "setuptools>=64",
+    "setuptools_scm[toml]>=8.0",
 ]
 build-backend = "setuptools.build_meta"
 
-## TODO: The presence of this section breaks tox running pypy3 on GitLab CI.
-# [tool.setuptools_scm]
+[project]
+name = "simpy"
+description = "Event discrete, process based simulation for Python."
+readme = "README.rst"
+license = { text = "MIT" }
+requires-python = ">= 3.8"
+authors = [
+    { name = "Ontje Lünsdorf", email = "the_com@gmx.de" },
+    { name = "Stefan Scherfke", email = "stefan@sofa-rockers.org" },
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = []
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://simpy.readthedocs.io"
+Documentation = "https://simpy.readthedocs.io"
+"Source code" = "https://gitlab.com/team-simpy/simpy/"
+
+[tool.setuptools]
+license-files = ["LICENSE.rst"]
+
+[tool.setuptools_scm]

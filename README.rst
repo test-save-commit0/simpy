@@ -76,20 +76,21 @@ You can install SimPy easily via `pip <http://pypi.python.org/pypi/pip>`_:
 
 .. code-block:: bash
 
-    $ pip install -U simpy
+    $ python -m pip install simpy
 
 You can also download and install SimPy manually:
 
 .. code-block:: bash
 
     $ cd where/you/put/simpy/
-    $ python setup.py install
+    $ python -m build
+    $ python -m pip install dist/simpy-*.whl
 
 To run SimPy’s test suite on your installation, execute:
 
 .. code-block:: bash
 
-    $ py.test --pyargs simpy
+    $ python -m tox
 
 
 Getting started
