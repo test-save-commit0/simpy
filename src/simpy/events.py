@@ -349,8 +349,7 @@ class Process(Event):
 
     def _desc(self) -> str:
         """Return a string *Process(process_func_name)*."""
-        gen_name: str = self._generator.__name__  # type: ignore
-        return f'{self.__class__.__name__}({gen_name})'
+        return f'{self.__class__.__name__}({self.name})'
 
     @property
     def target(self) -> Event:
@@ -361,6 +360,11 @@ class Process(Event):
 
         """
         return self._target
+
+    @property
+    def name(self) -> str:
+        """Return the name of the function used to start the process."""
+        return self._generator.__name__  # type: ignore
 
     @property
     def is_alive(self) -> bool:
