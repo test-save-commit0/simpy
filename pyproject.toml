@@ -46,3 +46,19 @@ Documentation = "https://simpy.readthedocs.io"
 license-files = ["LICENSE.rst"]
 
 [tool.setuptools_scm]
+
+[tool.mypy]
+pretty = true
+show_error_codes = true
+files = ["src/simpy"]
+
+[tool.pytest.ini_options]
+addopts = '''--doctest-glob="*.rst" -m "not benchmark"'''
+
+[tool.coverage.run]
+branch = true
+include = [
+    "src/simpy/*",
+    "docs/*",
+    "tests/*",
+]
