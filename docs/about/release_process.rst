@@ -35,7 +35,7 @@ Preparations
 
    .. code-block:: console
 
-    $ make -C docs html
+    $ tox -e sphinx
 
 #. Check if all authors are listed in :file:`AUTHORS.txt`.
 
@@ -65,7 +65,7 @@ Build and release
 
    .. code-block:: bash
 
-      $ python setup.py sdist bdist_wheel
+      $ python -m build
       $ ls dist/
       simpy-a.b.c-py2.py3-none-any.whl simpy-a.b.c.tar.gz
 
