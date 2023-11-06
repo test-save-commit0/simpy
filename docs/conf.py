@@ -14,7 +14,6 @@
 
 import datetime
 import importlib.metadata
-import typing
 
 # HACK: these imports are a workaround for
 # https://github.com/sphinx-doc/sphinx/issues/9243
@@ -24,12 +23,6 @@ import sphinx.builders.linkcheck
 import sphinx.builders.texinfo
 import sphinx.builders.text
 import sphinx.ext.autodoc  # noqa
-
-# This is used to allow the type checking stubs for various BoundClass methods
-# to be used in the Sphinx documentation in place of the true BoundClass
-# instance attributes. The 'SPHINX' value is used to distinguish sphinx-time
-# versus real type checking-time so that circular imports may still be avoided.
-typing.TYPE_CHECKING = 'SPHINX'
 
 # -- General configuration ----------------------------------------------------
 
