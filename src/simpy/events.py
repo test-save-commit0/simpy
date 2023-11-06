@@ -649,9 +649,9 @@ def _describe_frame(frame: FrameType) -> str:
     with open(filename) as f:
         for no, line in enumerate(f):
             if no + 1 == lineno:
-                break
-
-    return (
-        f'  File "{filename}", line {lineno}, in {name}\n'
-        f'    {line.strip()}\n'
-    )
+                return (
+                    f'  File "{filename}", line {lineno}, in {name}\n'
+                    f'    {line.strip()}\n'
+                )
+        else:
+            return f'  File "{filename}", line {lineno}, in {name}\n'
