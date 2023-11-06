@@ -9,7 +9,6 @@ The following tables list all the available components in this module.
 
 """
 import importlib.metadata
-from pkgutil import extend_path
 from typing import Tuple, Type
 
 from simpy.core import Environment
@@ -80,8 +79,6 @@ _toc = (
 if __doc__:
     __doc__ = __doc__.format(toc=_compile_toc(_toc))
     assert set(__all__) == {obj.__name__ for _, objs in _toc for obj in objs}
-
-__path__ = list(extend_path(__path__, __name__))
 
 try:
     __version__ = importlib.metadata.version("simpy")
