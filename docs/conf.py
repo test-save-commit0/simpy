@@ -14,8 +14,6 @@
 
 import datetime
 import importlib.metadata
-import os
-import sys
 import typing
 
 # HACK: these imports are a workaround for
@@ -32,11 +30,6 @@ import sphinx.ext.autodoc  # noqa
 # instance attributes. The 'SPHINX' value is used to distinguish sphinx-time
 # versus real type checking-time so that circular imports may still be avoided.
 typing.TYPE_CHECKING = 'SPHINX'
-
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath(os.path.join('..', 'src')))
 
 # -- General configuration ----------------------------------------------------
 
