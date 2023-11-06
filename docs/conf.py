@@ -15,15 +15,6 @@
 import datetime
 import importlib.metadata
 
-# HACK: these imports are a workaround for
-# https://github.com/sphinx-doc/sphinx/issues/9243
-import sphinx.builders.html
-import sphinx.builders.latex
-import sphinx.builders.linkcheck
-import sphinx.builders.texinfo
-import sphinx.builders.text
-import sphinx.ext.autodoc  # noqa
-
 # -- General configuration ----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
