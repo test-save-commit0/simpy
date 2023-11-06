@@ -1,6 +1,23 @@
 Changelog for SimPy
 ===================
 
+4.1.0 - 2023-11-05
+------------------
+
+- [BREAKING] Python 3.8 is the minimum supported version
+- [BREAKING] Contemporary setuptools based packaging
+- [NEW] Add ``Process.name`` property
+- [FIX] Support Python 3.12
+- [CHANGE] use PEP-563 postponed evaluation of annotations
+- [CHANGE] remove __path__ munging for namespace package
+- [DOCS] Fix machine shop example to avoid negative times
+- [DOCS] Update to sphinx 7.2.6
+- [DOCS] Remove sys.path hack in sphinx config
+- [DOCS] Remove sphinx ``TYPE_CHECKING`` circular import hack
+- [DOCS] Remove sphinx extensions circular import hack
+- [DOCS] SimJulia renamed to ConcurrentSim.jl
+
+
 4.0.2 - 2023-07-30
 ------------------
 
