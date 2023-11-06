@@ -34,7 +34,11 @@ SIM_TIME = WEEKS * 7 * 24 * 60  # Simulation time in minutes
 
 def time_per_part():
     """Return actual processing time for a concrete part."""
-    return random.normalvariate(PT_MEAN, PT_SIGMA)
+    t = random.normalvariate(PT_MEAN, PT_SIGMA)
+    # The normalvariate can be negative, but we want only positive times.
+    while t <= 0:
+        t = random.normalvariate(PT_MEAN, PT_SIGMA)
+    return t
 
 
 def time_to_failure():
