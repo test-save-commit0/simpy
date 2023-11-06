@@ -76,9 +76,9 @@ class Machine(object):
             # Start making a new part
             done_in = time_per_part()
             while done_in:
+                start = self.env.now
                 try:
                     # Working on the part
-                    start = self.env.now
                     yield self.env.timeout(done_in)
                     done_in = 0  # Set to 0 to exit while loop.
 
