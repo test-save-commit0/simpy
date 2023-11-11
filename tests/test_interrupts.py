@@ -206,14 +206,11 @@ def test_concurrent_behaviour(env):
     def proc_a(env):
         timeouts = [env.timeout(0) for i in range(2)]
         while timeouts:
-            try:
+            with pytest.raises(simpy.Interrupt):
                 yield timeouts.pop(0)
-                assert False, 'Expected an interrupt'
-            except simpy.Interrupt:
-                pass
 
-    def proc_b(env, proc_a):
-        for i in range(2):
+    def proc_b(_, proc_a):
+        for _ in range(2):
             proc_a.interrupt()
         return
         yield

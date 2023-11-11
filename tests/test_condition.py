@@ -133,11 +133,8 @@ def test_cond_with_uncaught_error(env):
         yield env.timeout(1) | env.process(explode(env, 2))
 
     env.process(process(env))
-    try:
+    with pytest.raises(ValueError):
         env.run()
-        assert False, 'There should have been an exception.'
-    except ValueError:
-        pass
     assert env.now == 2
 
 

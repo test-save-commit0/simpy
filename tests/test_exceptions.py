@@ -162,11 +162,8 @@ def test_exception_handling(env):
 
     event = env.event()
     event.fail(RuntimeError())
-    try:
+    with pytest.raises(RuntimeError):
         env.run(until=1)
-        assert False, 'There must be a RuntimeError!'
-    except RuntimeError:
-        pass
 
 
 def test_callback_exception_handling(env):
@@ -190,7 +187,7 @@ def test_process_exception_handling(env):
     def pem(_, event):
         try:
             yield event
-            assert False, 'Hey, the event should fail!'
+            pytest.fail('Hey, the event should fail!')
         except RuntimeError:
             pass
 

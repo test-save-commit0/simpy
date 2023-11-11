@@ -82,11 +82,8 @@ def test_unavailable_value(env):
     trying to access it will result in a AttributeError."""
     event = env.event()
 
-    try:
-        event.value
-        assert False, 'Expected an exception'
-    except AttributeError as e:
-        assert e.args[0].endswith('is not yet available')
+    with pytest.raises(AttributeError, match='.* is not yet available$'):
+        _ = event.value
 
 
 def test_triggered(env):

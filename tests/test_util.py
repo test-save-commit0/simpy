@@ -169,11 +169,8 @@ def test_wait_for_all_with_errors(env):
         ]
 
         condition = env.all_of(events)
-        try:
+        with pytest.raises(RuntimeError, match='crashing'):
             yield condition
-            assert False, 'There should have been an exception'
-        except RuntimeError as e:
-            assert e.args[0] == 'crashing'
 
         # Although the condition has failed, interim values are available.
         assert condition._events[0].value == 1
@@ -265,11 +262,8 @@ def test_any_of_with_errors(env):
     def parent(env):
         events = [env.process(child_with_error(env, 1)), env.timeout(2, value=2)]
         condition = env.any_of(events)
-        try:
+        with pytest.raises(RuntimeError, match='crashing'):
             yield condition
-            assert False, 'There should have been an exception'
-        except RuntimeError as e:
-            assert e.args[0] == 'crashing'
 
         assert condition._events[0].value.args[0] == 'crashing'
         # The last event has not terminated yet.
