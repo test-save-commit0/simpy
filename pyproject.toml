@@ -63,3 +63,10 @@ include = [
     "docs/*",
     "tests/*",
 ]
+
+[tool.ruff]
+
+[tool.ruff.lint]
+
+[tool.ruff.format]
+quote-style = "single"
