@@ -20,6 +20,7 @@ import random
 import simpy
 
 
+# fmt: off
 RANDOM_SEED = 42
 PT_MEAN = 10.0         # Avg. processing time in minutes
 PT_SIGMA = 2.0         # Sigma of processing time
@@ -30,6 +31,7 @@ JOB_DURATION = 30.0    # Duration of other jobs in minutes
 NUM_MACHINES = 10      # Number of machines in the machine shop
 WEEKS = 4              # Simulation time in weeks
 SIM_TIME = WEEKS * 7 * 24 * 60  # Simulation time in minutes
+# fmt: on
 
 
 def time_per_part():
@@ -55,6 +57,7 @@ class Machine(object):
     A machine has a *name* and a number of *parts_made* thus far.
 
     """
+
     def __init__(self, env, name, repairman):
         self.env = env
         self.name = name
@@ -115,8 +118,8 @@ def other_jobs(env, repairman):
             # Its priority is lower than that of machine repairs.
             with repairman.request(priority=2) as req:
                 yield req
+                start = env.now
                 try:
-                    start = env.now
                     yield env.timeout(done_in)
                     done_in = 0
                 except simpy.Interrupt:
@@ -130,14 +133,13 @@ random.seed(RANDOM_SEED)  # This helps to reproduce the results
 # Create an environment and start the setup process
 env = simpy.Environment()
 repairman = simpy.PreemptiveResource(env, capacity=1)
-machines = [Machine(env, 'Machine %d' % i, repairman)
-            for i in range(NUM_MACHINES)]
+machines = [Machine(env, f'Machine {i}', repairman) for i in range(NUM_MACHINES)]
 env.process(other_jobs(env, repairman))
 
 # Execute!
 env.run(until=SIM_TIME)
 
 # Analysis/results
-print('Machine shop results after %s weeks' % WEEKS)
+print(f'Machine shop results after {WEEKS} weeks')
 for machine in machines:
-    print('%s made %d parts.' % (machine.name, machine.parts_made))
+    print(f'{machine.name} made {machine.parts_made} parts.')
