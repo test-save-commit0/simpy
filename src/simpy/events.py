@@ -27,6 +27,7 @@ from typing import (
     NewType,
     Optional,
     Tuple,
+    TypeVar,
 )
 
 from simpy.exceptions import Interrupt
@@ -209,7 +210,8 @@ class Event:
         return Condition(self.env, Condition.any_events, [self, other])
 
 
-EventCallback = Callable[[Event], None]
+EventType = TypeVar("EventType", bound=Event)
+EventCallback = Callable[[EventType], None]
 EventCallbacks = List[EventCallback]
 
 
