@@ -13,8 +13,8 @@ Scenario:
   to buy tickets for that movie renege (leave queue).
 
 """
-import collections
 import random
+from typing import Dict, List, NamedTuple, Optional
 
 import simpy
 
@@ -73,9 +73,13 @@ def customer_arrivals(env, theater):
             env.process(moviegoer(env, movie, num_tickets, theater))
 
 
-Theater = collections.namedtuple('Theater', 'counter, movies, available, '
-                                            'sold_out, when_sold_out, '
-                                            'num_renegers')
+class Theater(NamedTuple):
+    counter: simpy.Resource
+    movies: List[str]
+    available: Dict[str, int]
+    sold_out: Dict[str, simpy.Event]
+    when_sold_out: Dict[str, Optional[float]]
+    num_renegers: Dict[str, int]
 
 
 # Setup and start the simulation
@@ -84,14 +88,15 @@ random.seed(RANDOM_SEED)
 env = simpy.Environment()
 
 # Create movie theater
-counter = simpy.Resource(env, capacity=1)
 movies = ['Python Unchained', 'Kill Process', 'Pulp Implementation']
-available = {movie: TICKETS for movie in movies}
-sold_out = {movie: env.event() for movie in movies}
-when_sold_out = {movie: None for movie in movies}
-num_renegers = {movie: 0 for movie in movies}
-theater = Theater(counter, movies, available, sold_out, when_sold_out,
-                  num_renegers)
+theater = Theater(
+    counter=simpy.Resource(env, capacity=1),
+    movies=movies,
+    available={movie: TICKETS for movie in movies},
+    sold_out={movie: env.event() for movie in movies},
+    when_sold_out={movie: None for movie in movies},
+    num_renegers={movie: 0 for movie in movies},
+)
 
 # Start process and run
 env.process(customer_arrivals(env, theater))
@@ -100,7 +105,10 @@ env.run(until=SIM_TIME)
 # Analysis/results
 for movie in movies:
     if theater.sold_out[movie]:
-        print('Movie "%s" sold out %.1f minutes after ticket counter '
-              'opening.' % (movie, theater.when_sold_out[movie]))
-        print('  Number of people leaving queue when film sold out: %s' %
-              theater.num_renegers[movie])
+        sellout_time = theater.when_sold_out[movie]
+        num_renegers = theater.num_renegers[movie]
+        print(
+            f'Movie "{movie}" sold out {sellout_time:.1f} minutes '
+            f'after ticket counter opening.'
+        )
+        print(f'  Number of people leaving queue when film sold out: {num_renegers}')
