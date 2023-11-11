@@ -115,9 +115,7 @@ class PriorityRequest(Request):
 
     """
 
-    def __init__(
-        self, resource: Resource, priority: int = 0, preempt: bool = True
-    ):
+    def __init__(self, resource: Resource, priority: int = 0, preempt: bool = True):
         self.priority = priority
         """The priority of this request. A smaller number means higher
         priority."""
@@ -243,9 +241,7 @@ class PriorityResource(Resource):
 
     if TYPE_CHECKING:
 
-        def request(
-            self, priority: int = 0, preempt: bool = True
-        ) -> PriorityRequest:
+        def request(self, priority: int = 0, preempt: bool = True) -> PriorityRequest:
             """Request a usage slot with the given *priority*."""
             return PriorityRequest(self, priority, preempt)
 

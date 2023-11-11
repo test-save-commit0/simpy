@@ -210,7 +210,7 @@ class Event:
         return Condition(self.env, Condition.any_events, [self, other])
 
 
-EventType = TypeVar("EventType", bound=Event)
+EventType = TypeVar('EventType', bound=Event)
 EventCallback = Callable[[EventType], None]
 EventCallbacks = List[EventCallback]
 
@@ -286,9 +286,7 @@ class Interruption(Event):
         self._defused = True
 
         if process._value is not PENDING:
-            raise RuntimeError(
-                f'{process} has terminated and cannot be interrupted.'
-            )
+            raise RuntimeError(f'{process} has terminated and cannot be interrupted.')
 
         if process is self.env.active_process:
             raise RuntimeError('A process is not allowed to interrupt itself.')
@@ -536,8 +534,7 @@ class Condition(Event):
         for event in self._events:
             if self.env != event.env:
                 raise ValueError(
-                    'It is not allowed to mix events from different '
-                    'environments'
+                    'It is not allowed to mix events from different environments'
                 )
 
         # Check if the condition is met for each processed event. Attach
@@ -555,10 +552,7 @@ class Condition(Event):
 
     def _desc(self) -> str:
         """Return a string *Condition(evaluate, [events])*."""
-        return (
-            f'{self.__class__.__name__}('
-            f'{self._evaluate.__name__}, {self._events})'
-        )
+        return f'{self.__class__.__name__}({self._evaluate.__name__}, {self._events})'
 
     def _populate_value(self, value: ConditionValue) -> None:
         """Populate the *value* by recursively visiting all nested

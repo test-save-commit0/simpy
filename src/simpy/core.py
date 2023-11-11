@@ -133,9 +133,7 @@ class Environment:
             *generator*."""
             return Process(self, generator)
 
-        def timeout(
-            self, delay: SimTime = 0, value: Optional[Any] = None
-        ) -> Timeout:
+        def timeout(self, delay: SimTime = 0, value: Optional[Any] = None) -> Timeout:
             """Return a new :class:`~simpy.events.Timeout` event with a *delay*
             and, optionally, a *value*."""
             return Timeout(self, delay, value)
@@ -170,8 +168,7 @@ class Environment:
         delay: SimTime = 0,
     ) -> None:
         """Schedule an *event* with a given *priority* and a *delay*."""
-        heappush(self._queue,
-                 (self._now + delay, priority, next(self._eid), event))
+        heappush(self._queue, (self._now + delay, priority, next(self._eid), event))
 
     def peek(self) -> SimTime:
         """Get the time of the next scheduled event. Return
@@ -206,9 +203,7 @@ class Environment:
             exc.__cause__ = event._value
             raise exc
 
-    def run(
-        self, until: Optional[Union[SimTime, Event]] = None
-    ) -> Optional[Any]:
+    def run(self, until: Optional[Union[SimTime, Event]] = None) -> Optional[Any]:
         """Executes :meth:`step()` until the given criterion *until* is met.
 
         - If it is ``None`` (which is the default), this method will return

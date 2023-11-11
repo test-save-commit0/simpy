@@ -74,9 +74,7 @@ class Store(base.BaseResource):
 
     """
 
-    def __init__(
-        self, env: Environment, capacity: Union[float, int] = float('inf')
-    ):
+    def __init__(self, env: Environment, capacity: Union[float, int] = float('inf')):
         if capacity <= 0:
             raise ValueError('"capacity" must be > 0.')
 

@@ -15,11 +15,9 @@ from simpy.core import Environment
 from simpy.rt import RealtimeEnvironment
 from simpy.exceptions import SimPyException, Interrupt
 from simpy.events import Event, Timeout, Process, AllOf, AnyOf
-from simpy.resources.resource import (
-    Resource, PriorityResource, PreemptiveResource)
+from simpy.resources.resource import Resource, PriorityResource, PreemptiveResource
 from simpy.resources.container import Container
-from simpy.resources.store import (
-    Store, PriorityItem, PriorityStore, FilterStore)
+from simpy.resources.store import Store, PriorityItem, PriorityStore, FilterStore
 
 __all__ = [
     'AllOf',
@@ -60,19 +58,38 @@ def _compile_toc(
 
 
 _toc = (
-    ('Environments', (
-        Environment, RealtimeEnvironment,
-    )),
-    ('Events', (
-        Event, Timeout, Process, AllOf, AnyOf, Interrupt,
-    )),
-    ('Resources', (
-        Resource, PriorityResource, PreemptiveResource, Container, Store,
-        PriorityItem, PriorityStore, FilterStore,
-    )),
-    ('Exceptions', (
-        SimPyException, Interrupt
-    )),
+    (
+        'Environments',
+        (
+            Environment,
+            RealtimeEnvironment,
+        ),
+    ),
+    (
+        'Events',
+        (
+            Event,
+            Timeout,
+            Process,
+            AllOf,
+            AnyOf,
+            Interrupt,
+        ),
+    ),
+    (
+        'Resources',
+        (
+            Resource,
+            PriorityResource,
+            PreemptiveResource,
+            Container,
+            Store,
+            PriorityItem,
+            PriorityStore,
+            FilterStore,
+        ),
+    ),
+    ('Exceptions', (SimPyException, Interrupt)),
 )
 
 # Use the _toc to keep the documentation and the implementation in sync.
@@ -81,7 +98,7 @@ if __doc__:
     assert set(__all__) == {obj.__name__ for _, objs in _toc for obj in objs}
 
 try:
-    __version__ = importlib.metadata.version("simpy")
+    __version__ = importlib.metadata.version('simpy')
 except importlib.metadata.PackageNotFoundError:
     # package is not installed
     pass
