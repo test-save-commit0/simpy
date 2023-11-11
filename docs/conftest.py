@@ -50,9 +50,11 @@ class ExampleItem(pytest.Item):
         with self.outfile.open() as f:
             expected = f.read()
 
-        output = subprocess.check_output([sys.executable, str(self.pyfile)],
-                                         stderr=subprocess.STDOUT,
-                                         universal_newlines=True)
+        output = subprocess.check_output(
+            [sys.executable, str(self.pyfile)],
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+        )
 
         if output != expected:
             # Hijack the ValueError exception to identify mismatching output.
@@ -79,6 +81,7 @@ class ExampleItem(pytest.Item):
 
 class ReprFailExample(TerminalRepr):
     """Reports output mismatches in a nice and informative representation."""
+
     Markup = {
         '+': dict(green=True),
         '-': dict(red=True),
@@ -101,13 +104,17 @@ class ReprFailExample(TerminalRepr):
 
 class ReprErrorExample(TerminalRepr):
     """Reports failures in the execution of an example."""
+
     def __init__(self, pyfile, exc_info):
         self.pyfile = pyfile
         self.exc_info = exc_info
 
     def toterminal(self, tw):
-        tw.line('Execution of {self.pyfile.basename} failed. Captured output:',
-                red=True, bold=True)
+        tw.line(
+            'Execution of {self.pyfile.basename} failed. Captured output:',
+            red=True,
+            bold=True,
+        )
         tw.sep('-')
         tw.line(self.exc_info.value.output)
         rc = self.exc_info.value.returncode
