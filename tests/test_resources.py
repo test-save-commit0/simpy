@@ -555,7 +555,7 @@ def test_store_capacity(env):
 
     capacity = 2
     store = simpy.Store(env, capacity)
-    env.process((store.put(i) for i in range(capacity + 1)))
+    env.process(store.put(i) for i in range(capacity + 1))
     env.run()
 
     # Ensure store is filled to capacity
@@ -585,7 +585,7 @@ def test_priority_store_item_priority(env):
 
     # Do not specify priority; the items themselves will be compared to
     # determine priority.
-    env.process((pstore.put(s) for s in 'bcadefg'))
+    env.process(pstore.put(s) for s in 'bcadefg')
     env.process(getter(1))
     env.process(getter(2))
     env.process(getter(3))
@@ -605,7 +605,7 @@ def test_priority_store_stable_order(env):
     items = [object() for _ in range(3)]
 
     # Unorderable items are inserted with same priority.
-    env.process((pstore.put(simpy.PriorityItem(0, item)) for item in items))
+    env.process(pstore.put(simpy.PriorityItem(0, item)) for item in items)
     env.process(getter(1))
     env.process(getter(2))
     env.process(getter(3))

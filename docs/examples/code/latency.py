@@ -25,7 +25,7 @@ import simpy
 SIM_DURATION = 100
 
 
-class Cable(object):
+class Cable:
     """This class represents the propagation through a cable."""
 
     def __init__(self, env, delay):

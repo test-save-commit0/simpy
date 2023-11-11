@@ -29,7 +29,7 @@ SIM_TIME = 20     # Simulation time in minutes
 # fmt: on
 
 
-class Carwash(object):
+class Carwash:
     """A carwash has a limited number of machines (``NUM_MACHINES``) to
     clean cars in parallel.
 

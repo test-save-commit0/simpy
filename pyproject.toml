@@ -74,9 +74,12 @@ select = [
     "W", # Pycodestyle
     "I", # isort
     "N", # pep8-naming
+    "UP", # pyupgrade
 ]
 ignore = [
     "N818", # Require "Error" suffix on exception type names
+    "UP006", # Use 'type' instead of 'Type' for annotations
+    "UP007", # Use 'X | Y' instead of 'Optional' in annotations
 ]
 
 [tool.ruff.format]

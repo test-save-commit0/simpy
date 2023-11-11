@@ -47,7 +47,7 @@ def time_to_failure():
     return random.expovariate(BREAK_MEAN)
 
 
-class Machine(object):
+class Machine:
     """A machine produces parts and my get broken every now and then.
 
     If it breaks, it requests a *repairman* and continues the production

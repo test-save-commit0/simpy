@@ -36,7 +36,7 @@ RANDOM_SEED = 42
 SIM_TIME = 100
 
 
-class BroadcastPipe(object):
+class BroadcastPipe:
     """A Broadcast pipe that allows one process to send messages to many.
 
     This construct is useful when message consumers are running at

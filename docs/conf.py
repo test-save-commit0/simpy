@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # SimPy documentation build configuration file, created by
 # sphinx-quickstart on Fri Aug 12 23:31:06 2011.
 #
@@ -45,7 +43,7 @@ master_doc = 'contents'
 # General information about the project.
 authors = ['Team SimPy']
 project = 'SimPy'
-copyright = '2002–%s, %s' % (datetime.datetime.now().year, ', '.join(authors))
+copyright = f'2002–{datetime.datetime.now().year}, {", ".join(authors)}'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
