@@ -8,6 +8,7 @@ import pytest
 
 def test_discrete_time_steps(env, log):
     """envple envulation with discrete time steps."""
+
     def pem(env, log):
         while True:
             log.append(env.now)
@@ -21,6 +22,7 @@ def test_discrete_time_steps(env, log):
 
 def test_negative_timeout(env):
     """Don't allow negative timeout times."""
+
     def pem(env):
         yield env.timeout(-1)
 
@@ -36,6 +38,7 @@ def test_timeout_value(env):
     See :class:`envpy.resources.Store` for an example.
 
     """
+
     def pem(env):
         val = yield env.timeout(1, 'ohai')
         assert val == 'ohai'

@@ -19,6 +19,7 @@ def test_resource(env, log):
     at a gas station).
 
     """
+
     def pem(env, name, resource, log):
         req = resource.request()
         yield req
@@ -46,6 +47,7 @@ def test_resource_capacity(env):
 def test_resource_context_manager(env, log):
     """The event that ``Resource.request()`` returns can be used as
     Context Manager."""
+
     def pem(env, name, resource, log):
         with resource.request() as request:
             yield request
@@ -73,13 +75,23 @@ def test_resource_slots(env, log):
         env.process(pem(env, str(i), resource, log))
     env.run()
 
-    assert log == [('0', 0), ('1', 0), ('2', 0), ('3', 1), ('4', 1), ('5', 1),
-                   ('6', 2), ('7', 2), ('8', 2)]
+    assert log == [
+        ('0', 0),
+        ('1', 0),
+        ('2', 0),
+        ('3', 1),
+        ('4', 1),
+        ('5', 1),
+        ('6', 2),
+        ('7', 2),
+        ('8', 2),
+    ]
 
 
 def test_resource_continue_after_interrupt(env):
     """A process may be interrupted while waiting for a resource but
     should be able to continue waiting afterwards."""
+
     def pem(env, res):
         with res.request() as req:
             yield req
@@ -110,6 +122,7 @@ def test_resource_continue_after_interrupt(env):
 def test_resource_release_after_interrupt(env):
     """A process needs to release a resource, even if it was interrupted
     and does not continue to wait for it."""
+
     def blocker(env, res):
         with res.request() as req:
             yield req
@@ -140,6 +153,7 @@ def test_resource_release_after_interrupt(env):
 def test_resource_immediate_requests(env):
     """A process must not acquire a resource if it releases it and immediately
     requests it again while there are already other requesting processes."""
+
     def child(env, res):
         result = []
         for i in range(3):
@@ -166,6 +180,7 @@ def test_resource_immediate_requests(env):
 
 def test_resource_cm_exception(env, log):
     """Resource with context manager receives an exception."""
+
     def process(env, resource, log, raise_):
         try:
             with resource.request() as req:
@@ -330,11 +345,11 @@ def test_mixed_preemption(env, log):
     env.run()
 
     assert log == [
-        (2, 0),           # p0 done
+        (2, 0),  # p0 done
         (3, 2, (p3, 2)),  # p2 got it next, but got interrupted by p3
-        (5, 3),           # p3 done
-        (7, 1),           # p1 done (finally got the resource)
-        (9, 4),           # p4 done
+        (5, 3),  # p3 done
+        (7, 1),  # p1 done (finally got the resource)
+        (9, 4),  # p4 done
     ]
 
 
@@ -360,12 +375,21 @@ def test_nested_preemption(env, log):
                         yield env.timeout(5)
                         log.append((env.now, id))
                     except simpy.Interrupt as ir:
-                        log.append((env.now, id, (ir.cause.by,
-                                                  ir.cause.usage_since,
-                                                  ir.cause.resource)))
+                        log.append(
+                            (
+                                env.now,
+                                id,
+                                (ir.cause.by, ir.cause.usage_since, ir.cause.resource),
+                            )
+                        )
             except simpy.Interrupt as ir:
-                log.append((env.now, id, (ir.cause.by, ir.cause.usage_since,
-                                          ir.cause.resource)))
+                log.append(
+                    (
+                        env.now,
+                        id,
+                        (ir.cause.by, ir.cause.usage_since, ir.cause.resource),
+                    )
+                )
 
     res0 = simpy.PreemptiveResource(env, 1)
     res1 = simpy.PreemptiveResource(env, 1)
@@ -384,8 +408,10 @@ def test_nested_preemption(env, log):
         (1, 0, (p1, 0, res1)),
         (6, 1),
         (21, 2, (p3, 20, res0)),
-        (26, 3), (31, 4),
+        (26, 3),
+        (31, 4),
     ]
+
 
 #
 # Tests for Container
@@ -401,6 +427,7 @@ def test_container(env, log):
     successful.
 
     """
+
     def putter(env, buf, log):
         yield env.timeout(1)
         while True:
@@ -456,15 +483,18 @@ def test_container_get_put_bounds(env):
     pytest.raises(ValueError, container.put, -13)
 
 
-@pytest.mark.parametrize(('error', 'args'), [
-    (None, [2, 1]),  # normal case
-    (None, [1, 1]),  # init == capacity should be valid
-    (None, [1, 0]),  # init == 0 should be valid
-    (ValueError, [1, 2]),  # init > capacity
-    (ValueError, [0]),  # capacity == 0
-    (ValueError, [-1]),  # capacity < 0
-    (ValueError, [1, -1]),  # init < 0
-])
+@pytest.mark.parametrize(
+    ('error', 'args'),
+    [
+        (None, [2, 1]),  # normal case
+        (None, [1, 1]),  # init == capacity should be valid
+        (None, [1, 0]),  # init == 0 should be valid
+        (ValueError, [1, 2]),  # init > capacity
+        (ValueError, [0]),  # capacity == 0
+        (ValueError, [-1]),  # capacity < 0
+        (ValueError, [1, -1]),  # init < 0
+    ],
+)
 def test_container_init_capacity(env, error, args):
     args.insert(0, env)
     if error:
@@ -485,6 +515,7 @@ def test_store(env):
     objects).
 
     """
+
     def putter(env, store, item):
         yield store.put(item)
 
@@ -501,10 +532,13 @@ def test_store(env):
     env.run()
 
 
-@pytest.mark.parametrize('Store', [
-    simpy.Store,
-    simpy.FilterStore,
-])
+@pytest.mark.parametrize(
+    'Store',
+    [
+        simpy.Store,
+        simpy.FilterStore,
+    ],
+)
 def test_initial_store_capacity(env, Store):
     store = Store(env)
     assert store.capacity == float('inf')
@@ -598,6 +632,7 @@ def test_filter_store_get_after_mismatch(env):
     first mismatch.
 
     """
+
     def putter(env, store):
         # The order of putting 'spam' before 'eggs' is important here.
         yield store.put('spam')
@@ -670,12 +705,14 @@ def test_filter_calls_worst_case(env):
 
     # The filter function is repeatedly called for every item in the store
     # until a match is found.
+    # fmt: off
     assert log == [
         'put 0', 'check 0',
         'put 1', 'check 0', 'check 1',
         'put 2', 'check 0', 'check 1', 'check 2',
         'put 3', 'check 0', 'check 1', 'check 2', 'check 3', 'get 3',
     ]
+    # fmt: on
 
 
 def test_immediate_put_request(env):

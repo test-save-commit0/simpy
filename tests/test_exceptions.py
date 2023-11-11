@@ -15,6 +15,7 @@ def test_error_forwarding(env):
     are any.
 
     """
+
     def child(env):
         raise ValueError('Onoes!')
         yield env.timeout(1)
@@ -35,6 +36,7 @@ def test_no_parent_process(env):
     for the one that raises something.
 
     """
+
     def child(env):
         raise ValueError('Onoes!')
         yield env.timeout(1)
@@ -63,7 +65,7 @@ def test_crashing_child_traceback(env):
             # The current frame must be visible in the stacktrace.
             stacktrace = traceback.format_exc()
             assert 'yield env.process(panic(env))' in stacktrace
-            assert 'raise RuntimeError(\'Oh noes,' in stacktrace
+            assert "raise RuntimeError('Oh noes," in stacktrace
 
     env.process(root(env))
     env.run()
@@ -74,6 +76,7 @@ def test_exception_chaining(env):
     visible in the stacktrace of the exception.
 
     """
+
     def child(env):
         yield env.timeout(1)
         raise RuntimeError('foo')
@@ -93,7 +96,10 @@ def test_exception_chaining(env):
     except RuntimeError:
         trace = traceback.format_exc()
 
-        expected = re.escape(textwrap.dedent("""\
+        expected = (
+            re.escape(
+                textwrap.dedent(
+                    """\
         Traceback (most recent call last):
           File "{path}tests/test_exceptions.py", line {line}, in child
             raise RuntimeError('foo')
@@ -123,7 +129,12 @@ def test_exception_chaining(env):
           File "{path}simpy/core.py", line {line}, in step
             raise exc
         RuntimeError: foo
-        """)).replace(r'\{line\}', r'\d+').replace(r'\{path\}', r'.*')  # NOQA
+        """
+                )
+            )
+            .replace(r'\{line\}', r'\d+')
+            .replace(r'\{path\}', r'.*')
+        )  # NOQA
 
         if platform.system() == 'Windows':
             expected = expected.replace(r'\/', r'\\')
@@ -161,6 +172,7 @@ def test_exception_handling(env):
 def test_callback_exception_handling(env):
     """Callbacks of events may handle exception by setting the ``defused``
     attribute of ``event`` to ``True``."""
+
     def callback(event):
         event.defused = True
 
@@ -174,6 +186,7 @@ def test_callback_exception_handling(env):
 
 def test_process_exception_handling(env):
     """Processes can't ignore failed events and auto-handle exceptions."""
+
     def pem(env, event):
         try:
             yield event

@@ -112,9 +112,7 @@ def test_cond_with_nested_error(env):
 
     def process(env):
         try:
-            yield (
-                env.process(explode(env, 0)) & env.timeout(1) | env.timeout(1)
-            )
+            yield env.process(explode(env, 0)) & env.timeout(1) | env.timeout(1)
             pytest.fail('The condition should have raised a ValueError')
         except ValueError as err:
             assert err.args == ('Onoes, failed after 0!',)
@@ -126,6 +124,7 @@ def test_cond_with_nested_error(env):
 def test_cond_with_uncaught_error(env):
     """Errors that happen after the condition has been triggered will not be
     handled by the condition and cause the simulation to crash."""
+
     def explode(env, delay):
         yield env.timeout(delay)
         raise ValueError(f'Onoes, failed after {delay}!')
@@ -205,6 +204,7 @@ def test_ior_with_and_cond(env):
 def test_immutable_results(env):
     """Results of conditions should not change after they have been
     triggered."""
+
     def process(env):
         timeout = [env.timeout(delay, value=delay) for delay in range(3)]
         # The or condition in this expression will trigger immediately. The and

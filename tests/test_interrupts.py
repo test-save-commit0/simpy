@@ -33,6 +33,7 @@ def test_concurrent_interrupts(env, log):
     occurred.
 
     """
+
     def fox(env, log):
         while True:
             try:
@@ -82,6 +83,7 @@ def test_concurrent_interrupts_and_events(env, log):
 def test_init_interrupt(env):
     """An interrupt should always be executed after the Initialize event at the
     same time."""
+
     def child(env):
         try:
             yield env.timeout(10)
@@ -111,8 +113,11 @@ def test_interrupt_terminated_process(env):
         # Wait long enough so that child_proc terminates.
         yield env.timeout(2)
         ei = pytest.raises(RuntimeError, child_proc.interrupt)
-        assert re.match(r'<Process\(child\) object at 0x.*> has terminated '
-                        r'and cannot be interrupted.', ei.value.args[0])
+        assert re.match(
+            r'<Process\(child\) object at 0x.*> has terminated '
+            r'and cannot be interrupted.',
+            ei.value.args[0],
+        )
 
         yield env.timeout(1)
 
@@ -127,6 +132,7 @@ def test_multiple_interrupts(env):
     ignored.
 
     """
+
     def child(env):
         try:
             yield env.timeout(1)
@@ -147,6 +153,7 @@ def test_multiple_interrupts(env):
 
 def test_interrupt_self(env):
     """A process should not be able to interrupt itself."""
+
     def pem(env):
         pytest.raises(RuntimeError, env.active_process.interrupt)
         yield env.timeout(0)
@@ -157,6 +164,7 @@ def test_interrupt_self(env):
 
 def test_immediate_interrupt(env, log):
     """Processes are immediately interruptable."""
+
     def child(env, log):
         try:
             yield env.event()
@@ -178,6 +186,7 @@ def test_immediate_interrupt(env, log):
 
 def test_interrupt_event(env):
     """A process should be interruptable while waiting for an Event."""
+
     def child(env):
         try:
             yield env.event()

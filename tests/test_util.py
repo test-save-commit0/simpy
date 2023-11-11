@@ -20,6 +20,7 @@ def test_start_delayed(env):
 
 def test_start_delayed_error(env):
     """Check if delayed() raises an error if you pass a negative dt."""
+
     def pem(env):
         yield env.timeout(1)
 
@@ -28,6 +29,7 @@ def test_start_delayed_error(env):
 
 def test_subscribe(env):
     """Check async. interrupt if a process terminates."""
+
     def child(env):
         yield env.timeout(3)
         return 'ohai'
@@ -52,6 +54,7 @@ def test_subscribe_terminated_proc(env):
     "other" has already terminated.
 
     """
+
     def child(env):
         yield env.timeout(1)
 
@@ -66,6 +69,7 @@ def test_subscribe_terminated_proc(env):
 
 def test_subscribe_with_join(env):
     """Test that subscribe() works if a process waits for another one."""
+
     def child(env, i):
         yield env.timeout(i)
 
@@ -86,6 +90,7 @@ def test_subscribe_with_join(env):
 
 def test_subscribe_at_timeout(env):
     """You should be able to subscribe at arbitrary events."""
+
     def pem(env):
         to = env.timeout(2)
         subscribe_at(to)
@@ -101,6 +106,7 @@ def test_subscribe_at_timeout(env):
 
 def test_subscribe_at_timeout_with_value(env):
     """An event's value should be accessible via the interrupt cause."""
+
     def pem(env):
         val = 'ohai'
         to = env.timeout(2, value=val)
@@ -117,6 +123,7 @@ def test_subscribe_at_timeout_with_value(env):
 
 def test_all_of(env):
     """Wait for all events to be triggered."""
+
     def parent(env):
         # Start 10 events.
         events = [env.timeout(i, value=i) for i in range(10)]
@@ -131,6 +138,7 @@ def test_all_of(env):
 
 def test_all_of_generator(env):
     """Conditions also work with generators."""
+
     def parent(env):
         # Start 10 events.
         events = (env.timeout(i, value=i) for i in range(10))
@@ -146,14 +154,17 @@ def test_all_of_generator(env):
 def test_wait_for_all_with_errors(env):
     """On default AllOf should fail immediately if one of its events
     fails."""
+
     def child_with_error(env, value):
         yield env.timeout(value)
         raise RuntimeError('crashing')
 
     def parent(env):
-        events = [env.timeout(1, value=1),
-                  env.process(child_with_error(env, 2)),
-                  env.timeout(3, value=3)]
+        events = [
+            env.timeout(1, value=1),
+            env.process(child_with_error(env, 2)),
+            env.timeout(3, value=3),
+        ]
 
         try:
             condition = env.all_of(events)
@@ -175,6 +186,7 @@ def test_wait_for_all_with_errors(env):
 def test_all_of_chaining(env):
     """If a wait_for_all condition A is chained to a wait_for_all condition B,
     B will be merged into A."""
+
     def parent(env):
         condition_A = env.all_of([env.timeout(i, value=i) for i in range(2)])
         condition_B = env.all_of([env.timeout(i, value=i) for i in range(2)])
@@ -192,6 +204,7 @@ def test_all_of_chaining_intermediate_results(env):
     """If a wait_for_all condition A with intermediate results is merged into
     another wait_for_all condition B, the results are copied into condition
     A."""
+
     def parent(env):
         condition_A = env.all_of([env.timeout(i, value=i) for i in range(2)])
         condition_B = env.all_of([env.timeout(i, value=i) for i in range(2)])
@@ -213,6 +226,7 @@ def test_all_of_chaining_intermediate_results(env):
 def test_all_of_with_triggered_events(env):
     """Processed events can be added to a condition. Confirm this with
     all_of."""
+
     def parent(env):
         events = [env.timeout(0, value='spam'), env.timeout(1, value='eggs')]
         yield env.timeout(2)
@@ -226,6 +240,7 @@ def test_all_of_with_triggered_events(env):
 
 def test_any_of(env):
     """Wait for any event to be triggered."""
+
     def parent(env):
         # Start 10 events.
         events = [env.timeout(i, value=i) for i in range(10)]
@@ -240,13 +255,13 @@ def test_any_of(env):
 
 def test_any_of_with_errors(env):
     """On default any_of should fail if the event has failed too."""
+
     def child_with_error(env, value):
         yield env.timeout(value)
         raise RuntimeError('crashing')
 
     def parent(env):
-        events = [env.process(child_with_error(env, 1)),
-                  env.timeout(2, value=2)]
+        events = [env.process(child_with_error(env, 1)), env.timeout(2, value=2)]
 
         try:
             condition = env.any_of(events)
@@ -266,6 +281,7 @@ def test_any_of_with_errors(env):
 def test_any_of_chaining(env):
     """If a any_of condition A is chained to a any_of condition B,
     B will be merged into A."""
+
     def parent(env):
         condition_A = env.any_of([env.timeout(2, value='a')])
         condition_B = env.any_of([env.timeout(1, value='b')])
@@ -282,6 +298,7 @@ def test_any_of_chaining(env):
 def test_any_of_with_triggered_events(env):
     """Processed events can be added to a condition. Confirm this with
     all_of."""
+
     def parent(env):
         events = [env.timeout(0, value='spam'), env.timeout(1, value='eggs')]
         yield env.timeout(2)
@@ -295,6 +312,7 @@ def test_any_of_with_triggered_events(env):
 
 def test_empty_any_of(env):
     """AnyOf will trigger immediately if there are no events."""
+
     def parent(env):
         results = yield env.any_of([])
         assert results == {}
@@ -305,6 +323,7 @@ def test_empty_any_of(env):
 
 def test_empty_all_of(env):
     """AllOf will trigger immediately if there are no events."""
+
     def parent(env):
         results = yield env.all_of([])
         assert results == {}
@@ -316,6 +335,7 @@ def test_empty_all_of(env):
 def test_all_of_expansion(env):
     """The result of AllOf is an OrderedDict, which allows to expand its values
     directly into variables."""
+
     def p(env):
         timeouts = [env.timeout(d, d) for d in [3, 2, 1]]
         a, b, c = (yield env.all_of(timeouts)).values()

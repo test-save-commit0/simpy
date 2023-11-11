@@ -10,6 +10,7 @@ from simpy import Interrupt
 
 def test_start_non_process(env):
     """Check that you cannot start a normal function."""
+
     def foo():
         pass
 
@@ -18,6 +19,7 @@ def test_start_non_process(env):
 
 def test_get_state(env):
     """A process is alive until it's generator has not terminated."""
+
     def pem_a(env):
         yield env.timeout(3)
 
@@ -49,6 +51,7 @@ def test_target(env):
 
 def test_wait_for_proc(env):
     """A process can wait until another process finishes."""
+
     def finisher(env):
         yield env.timeout(5)
 
@@ -64,6 +67,7 @@ def test_wait_for_proc(env):
 
 def test_return_value(env):
     """Processes can set a return value."""
+
     def child(env):
         yield env.timeout(1)
         return env.now
@@ -80,6 +84,7 @@ def test_return_value(env):
 
 def test_child_exception(env):
     """A child catches an exception and sends it to its parent."""
+
     def child(env):
         try:
             yield env.timeout(1)
@@ -128,6 +133,7 @@ def test_interrupted_join_and_rejoin(env):
     another process. The victim tries to join again.
 
     """
+
     def interruptor(env, process):
         yield env.timeout(1)
         process.interrupt()
