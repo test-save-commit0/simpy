@@ -28,6 +28,7 @@ SIM_DURATION = 100
 
 class Cable(object):
     """This class represents the propagation through a cable."""
+
     def __init__(self, env, delay):
         self.env = env
         self.delay = delay
@@ -49,7 +50,7 @@ def sender(env, cable):
     while True:
         # wait for next transmission
         yield env.timeout(5)
-        cable.put('Sender sent this at %d' % env.now)
+        cable.put(f'Sender sent this at {env.now}')
 
 
 def receiver(env, cable):
@@ -57,7 +58,7 @@ def receiver(env, cable):
     while True:
         # Get event for message pipe
         msg = yield cable.get()
-        print('Received this at %d while %s' % (env.now, msg))
+        print(f'Received this at {env.now} while {msg}')
 
 
 # Setup and start the simulation
