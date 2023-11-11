@@ -73,8 +73,11 @@ select = [
     "E", # Pycodestyle
     "W", # Pycodestyle
     "I", # isort
+    "N", # pep8-naming
 ]
-ignore = []
+ignore = [
+    "N818", # Require "Error" suffix on exception type names
+]
 
 [tool.ruff.format]
 quote-style = "single"

@@ -188,12 +188,12 @@ def test_all_of_chaining(env):
     B will be merged into A."""
 
     def parent(env):
-        condition_A = env.all_of([env.timeout(i, value=i) for i in range(2)])
-        condition_B = env.all_of([env.timeout(i, value=i) for i in range(2)])
+        condition_a = env.all_of([env.timeout(i, value=i) for i in range(2)])
+        condition_b = env.all_of([env.timeout(i, value=i) for i in range(2)])
 
-        condition_A &= condition_B
+        condition_a &= condition_b
 
-        results = yield condition_A
+        results = yield condition_a
         assert list(results.values()) == [0, 1, 0, 1]
 
     env.process(parent(env))
@@ -206,12 +206,12 @@ def test_all_of_chaining_intermediate_results(env):
     A."""
 
     def parent(env):
-        condition_A = env.all_of([env.timeout(i, value=i) for i in range(2)])
-        condition_B = env.all_of([env.timeout(i, value=i) for i in range(2)])
+        condition_a = env.all_of([env.timeout(i, value=i) for i in range(2)])
+        condition_b = env.all_of([env.timeout(i, value=i) for i in range(2)])
 
         yield env.timeout(0)
 
-        condition = condition_A & condition_B
+        condition = condition_a & condition_b
         result = ConditionValue()
         condition._populate_value(result)
         assert list(result.values()) == [0, 0]
@@ -283,12 +283,12 @@ def test_any_of_chaining(env):
     B will be merged into A."""
 
     def parent(env):
-        condition_A = env.any_of([env.timeout(2, value='a')])
-        condition_B = env.any_of([env.timeout(1, value='b')])
+        condition_a = env.any_of([env.timeout(2, value='a')])
+        condition_b = env.any_of([env.timeout(1, value='b')])
 
-        condition_A |= condition_B
+        condition_a |= condition_b
 
-        results = yield condition_A
+        results = yield condition_a
         assert list(results.values()) == ['b']
 
     env.process(parent(env))

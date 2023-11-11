@@ -532,14 +532,14 @@ def test_store(env):
 
 
 @pytest.mark.parametrize(
-    'Store',
+    'store_type',
     [
         simpy.Store,
         simpy.FilterStore,
     ],
 )
-def test_initial_store_capacity(env, Store):
-    store = Store(env)
+def test_initial_store_capacity(env, store_type):
+    store = store_type(env)
     assert store.capacity == float('inf')
 
 
