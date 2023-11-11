@@ -26,7 +26,7 @@ MAX_PATIENCE = 3  # Max. customer patience
 def source(env, number, interval, counter):
     """Source generates customers randomly"""
     for i in range(number):
-        c = customer(env, 'Customer%02d' % i, counter, time_in_bank=12.0)
+        c = customer(env, f'Customer{i:02d}', counter, time_in_bank=12.0)
         env.process(c)
         t = random.expovariate(1.0 / interval)
         yield env.timeout(t)
@@ -35,7 +35,7 @@ def source(env, number, interval, counter):
 def customer(env, name, counter, time_in_bank):
     """Customer arrives, is served and leaves."""
     arrive = env.now
-    print('%7.4f %s: Here I am' % (arrive, name))
+    print(f'{arrive:7.4f} {name}: Here I am')
 
     with counter.request() as req:
         patience = random.uniform(MIN_PATIENCE, MAX_PATIENCE)
@@ -46,15 +46,15 @@ def customer(env, name, counter, time_in_bank):
 
         if req in results:
             # We got to the counter
-            print('%7.4f %s: Waited %6.3f' % (env.now, name, wait))
+            print(f'{env.now:7.4f} {name}: Waited {wait:6.3f}')
 
             tib = random.expovariate(1.0 / time_in_bank)
             yield env.timeout(tib)
-            print('%7.4f %s: Finished' % (env.now, name))
+            print(f'{env.now:7.4f} {name}: Finished')
 
         else:
             # We reneged
-            print('%7.4f %s: RENEGED after %6.3f' % (env.now, name, wait))
+            print(f'{env.now:7.4f} {name}: RENEGED after {wait:6.3f}')
 
 
 # Setup and start the simulation
