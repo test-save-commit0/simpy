@@ -75,6 +75,7 @@ select = [
     "I", # isort
     "N", # pep8-naming
     "UP", # pyupgrade
+    "YTT", # flake8-2020
 ]
 ignore = [
     "N818", # Require "Error" suffix on exception type names
