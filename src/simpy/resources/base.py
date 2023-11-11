@@ -46,7 +46,7 @@ class Put(Event, ContextManager['Put'], Generic[ResourceType]):
         self.resource = resource
         self.proc: Optional[Process] = self.env.active_process
 
-        resource.put_queue.append(self)
+        resource.put_queue.append(self)  # pyright: ignore
         self.callbacks.append(resource._trigger_get)
         resource._trigger_put(None)
 
@@ -74,7 +74,7 @@ class Put(Event, ContextManager['Put'], Generic[ResourceType]):
 
         """
         if not self.triggered:
-            self.resource.put_queue.remove(self)
+            self.resource.put_queue.remove(self)  # pyright: ignore
 
 
 class Get(Event, ContextManager['Get'], Generic[ResourceType]):
@@ -97,7 +97,7 @@ class Get(Event, ContextManager['Get'], Generic[ResourceType]):
         self.resource = resource
         self.proc = self.env.active_process
 
-        resource.get_queue.append(self)
+        resource.get_queue.append(self)  # pyright: ignore
         self.callbacks.append(resource._trigger_put)
         resource._trigger_get(None)
 
@@ -125,7 +125,7 @@ class Get(Event, ContextManager['Get'], Generic[ResourceType]):
 
         """
         if not self.triggered:
-            self.resource.get_queue.remove(self)
+            self.resource.get_queue.remove(self)  # pyright: ignore
 
 
 PutType = TypeVar('PutType', bound=Put)
