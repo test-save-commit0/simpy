@@ -30,6 +30,7 @@ Example By:
 import random
 
 import simpy
+import simpy.core
 
 
 RANDOM_SEED = 42
@@ -48,6 +49,7 @@ class BroadcastPipe(object):
     :meth:`get_output_conn()` is called.
 
     """
+
     def __init__(self, env, capacity=simpy.core.Infinity):
         self.env = env
         self.capacity = capacity
@@ -84,7 +86,7 @@ def message_generator(name, env, out_pipe):
         # in the pipe first and then message_consumer gets from pipe,
         # the event.triggered will be True in the other order it will be
         # False
-        msg = (env.now, '%s says hello at %d' % (name, env.now))
+        msg = (env.now, f'{name} says hello at {env.now}')
         out_pipe.put(msg)
 
 
@@ -99,13 +101,14 @@ def message_consumer(name, env, in_pipe):
             # message_consumer was late getting to it. Depending on what
             # is being modeled this, may, or may not have some
             # significance
-            print('LATE Getting Message: at time %d: %s received message: %s' %
-                  (env.now, name, msg[1]))
+            print(
+                f'LATE Getting Message: at time {env.now}: '
+                f'{name} received message: {msg[1]}'
+            )
 
         else:
             # message_consumer is synchronized with message_generator
-            print('at time %d: %s received message: %s.' %
-                  (env.now, name, msg[1]))
+            print(f'at time {env.now}: {name} received message: {msg[1]}.')
 
         # Process does some other work, which may result in missing messages
         yield env.timeout(random.randint(4, 8))
