@@ -26,7 +26,7 @@ Preparations
     py38: commands succeeded
     pypy3: commands succeeded
     docs: commands succeeded
-    flake8: commands succeeded
+    ruff: commands succeeded
     mypy: commands succeeded
     congratulations :)
 

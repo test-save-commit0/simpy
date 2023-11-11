@@ -67,6 +67,13 @@ include = [
 [tool.ruff]
 
 [tool.ruff.lint]
+# See https://docs.astral.sh/ruff/rules/
+select = [
+    "F", # Pyflakes
+    "E", # Pycodestyle
+    "W", # Pycodestyle
+]
+ignore = []
 
 [tool.ruff.format]
 quote-style = "single"

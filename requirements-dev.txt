@@ -1,8 +1,8 @@
-flake8
 mypy
 pytest
 pytest-benchmark
 pytest-cov
+ruff
 setuptools_scm
 sphinx
 tox
