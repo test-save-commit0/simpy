@@ -15,16 +15,19 @@ Scenario:
   to finish. If not, they wait until they can use one.
 
 """
+import itertools
 import random
 
 import simpy
 
 
+# fmt: off
 RANDOM_SEED = 42
 NUM_MACHINES = 2  # Number of machines in the carwash
 WASHTIME = 5      # Minutes it takes to clean a car
 T_INTER = 7       # Create a car every ~7 minutes
 SIM_TIME = 20     # Simulation time in minutes
+# fmt: on
 
 
 class Carwash(object):
@@ -36,6 +39,7 @@ class Carwash(object):
     takes ``washtime`` minutes).
 
     """
+
     def __init__(self, env, num_machines, washtime):
         self.env = env
         self.machine = simpy.Resource(env, num_machines)
@@ -45,8 +49,8 @@ class Carwash(object):
         """The washing processes. It takes a ``car`` processes and tries
         to clean it."""
         yield self.env.timeout(self.washtime)
-        print("Carwash removed %d%% of %s's dirt." %
-              (random.randint(50, 99), car))
+        pct_dirt = random.randint(50, 99)
+        print(f"Carwash removed {pct_dirt}% of {car}'s dirt.")
 
 
 def car(env, name, cw):
@@ -57,14 +61,14 @@ def car(env, name, cw):
     leaves to never come back ...
 
     """
-    print('%s arrives at the carwash at %.2f.' % (name, env.now))
+    print(f'{name} arrives at the carwash at {env.now:.2f}.')
     with cw.machine.request() as request:
         yield request
 
-        print('%s enters the carwash at %.2f.' % (name, env.now))
+        print(f'{name} enters the carwash at {env.now:.2f}.')
         yield env.process(cw.wash(name))
 
-        print('%s leaves the carwash at %.2f.' % (name, env.now))
+        print(f'{name} leaves the carwash at {env.now:.2f}.')
 
 
 def setup(env, num_machines, washtime, t_inter):
@@ -73,15 +77,16 @@ def setup(env, num_machines, washtime, t_inter):
     # Create the carwash
     carwash = Carwash(env, num_machines, washtime)
 
+    car_count = itertools.count()
+
     # Create 4 initial cars
-    for i in range(4):
-        env.process(car(env, 'Car %d' % i, carwash))
+    for _ in range(4):
+        env.process(car(env, f'Car {next(car_count)}', carwash))
 
     # Create more cars while the simulation is running
     while True:
         yield env.timeout(random.randint(t_inter - 2, t_inter + 2))
-        i += 1
-        env.process(car(env, 'Car %d' % i, carwash))
+        env.process(car(env, f'Car {next(car_count)}', carwash))
 
 
 # Setup and start the simulation
