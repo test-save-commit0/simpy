@@ -145,7 +145,7 @@ def test_exception_chaining(env):
 def test_invalid_event(env):
     """Invalid yield values will cause the simulation to fail."""
 
-    def root(env):
+    def root(_):
         yield None
 
     env.process(root(env))
@@ -187,7 +187,7 @@ def test_callback_exception_handling(env):
 def test_process_exception_handling(env):
     """Processes can't ignore failed events and auto-handle exceptions."""
 
-    def pem(env, event):
+    def pem(_, event):
         try:
             yield event
             assert False, 'Hey, the event should fail!'
@@ -258,7 +258,10 @@ def test_sys_excepthook(env):
 
         stderr, sys.stderr = sys.stderr, StringIO()
 
-        sys.excepthook(*sys.exc_info())
+        typ, e, tb = sys.exc_info()
+        assert typ is not None
+        assert e is not None
+        sys.excepthook(typ, e, tb)
 
         traceback = sys.stderr.getvalue()
 

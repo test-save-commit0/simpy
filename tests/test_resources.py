@@ -6,6 +6,7 @@ Theses test cases demonstrate the API for shared resources.
 import pytest
 
 import simpy
+from simpy.resources.resource import Preempted
 
 #
 # Tests for Resource
@@ -97,8 +98,8 @@ def test_resource_continue_after_interrupt(env):
             yield env.timeout(1)
 
     def victim(env, res):
+        evt = res.request()
         try:
-            evt = res.request()
             yield evt
             pytest.fail('Should not have gotten the resource.')
         except simpy.Interrupt:
@@ -106,7 +107,7 @@ def test_resource_continue_after_interrupt(env):
             res.release(evt)
             assert env.now == 1
 
-    def interruptor(env, proc):
+    def interruptor(proc):
         proc.interrupt()
         return 0
         yield
@@ -114,7 +115,7 @@ def test_resource_continue_after_interrupt(env):
     res = simpy.Resource(env, 1)
     env.process(pem(env, res))
     proc = env.process(victim(env, res))
-    env.process(interruptor(env, proc))
+    env.process(interruptor(proc))
     env.run()
 
 
@@ -128,8 +129,8 @@ def test_resource_release_after_interrupt(env):
             yield env.timeout(1)
 
     def victim(env, res):
+        evt = res.request()
         try:
-            evt = res.request()
             yield evt
             pytest.fail('Should not have gotten the resource.')
         except simpy.Interrupt:
@@ -137,7 +138,7 @@ def test_resource_release_after_interrupt(env):
             res.release(evt)
             assert env.now == 0
 
-    def interruptor(env, proc):
+    def interruptor(proc):
         proc.interrupt()
         return 0
         yield
@@ -145,7 +146,7 @@ def test_resource_release_after_interrupt(env):
     res = simpy.Resource(env, 1)
     env.process(blocker(env, res))
     victim_proc = env.process(victim(env, res))
-    env.process(interruptor(env, victim_proc))
+    env.process(interruptor(victim_proc))
     env.run()
 
 
@@ -155,7 +156,7 @@ def test_resource_immediate_requests(env):
 
     def child(env, res):
         result = []
-        for i in range(3):
+        for _ in range(3):
             with res.request() as req:
                 yield req
                 result.append(env.now)
@@ -233,7 +234,7 @@ def test_sorted_queue_maxlen(env):
     """Requests must fail if more than *maxlen* requests happen
     concurrently."""
     resource = simpy.PriorityResource(env, capacity=1)
-    resource.put_queue.maxlen = 1
+    resource.put_queue.maxlen = 1  # pyright: ignore
 
     def process(env, resource):
         # The first request immediately triggered and does not enter the queue.
@@ -259,7 +260,7 @@ def test_get_users(env):
             yield env.timeout(1)
 
     resource = simpy.Resource(env, 1)
-    procs = [env.process(process(env, resource)) for i in range(3)]
+    procs = [env.process(process(env, resource)) for _ in range(3)]
     env.run(until=1)
     assert [evt.proc for evt in resource.users] == procs[0:1]
     assert [evt.proc for evt in resource.queue] == procs[1:]
@@ -277,7 +278,7 @@ def test_preemptive_resource(env):
     processes. Note that higher priorities are indicated by a lower number
     value."""
 
-    def proc_a(env, resource, prio):
+    def proc_a(_, resource, prio):
         try:
             with resource.request(priority=prio) as req:
                 yield req
@@ -285,7 +286,7 @@ def test_preemptive_resource(env):
         except simpy.Interrupt:
             pass
 
-    def proc_b(env, resource, prio):
+    def proc_b(_, resource, prio):
         with resource.request(priority=prio) as req:
             yield req
 
@@ -307,7 +308,7 @@ def test_preemptive_resource_timeout_0(env):
                 pass
         yield env.event()
 
-    def proc_b(env, resource, prio):
+    def proc_b(_, resource, prio):
         with resource.request(priority=prio) as req:
             yield req
 
@@ -327,6 +328,8 @@ def test_mixed_preemption(env, log):
                 yield env.timeout(2)
                 log.append((env.now, id))
             except simpy.Interrupt as ir:
+                assert ir is not None
+                assert isinstance(ir.cause, Preempted)
                 log.append((env.now, id, (ir.cause.by, ir.cause.usage_since)))
 
     res = simpy.PreemptiveResource(env, 1)
@@ -361,6 +364,7 @@ def test_nested_preemption(env, log):
                 yield env.timeout(5)
                 log.append((env.now, id))
             except simpy.Interrupt as ir:
+                assert isinstance(ir.cause, Preempted)
                 log.append((env.now, id, (ir.cause.by, ir.cause.usage_since)))
 
     def process2(id, env, res0, res1, delay, prio, preempt, log):
@@ -374,6 +378,7 @@ def test_nested_preemption(env, log):
                         yield env.timeout(5)
                         log.append((env.now, id))
                     except simpy.Interrupt as ir:
+                        assert isinstance(ir.cause, Preempted)
                         log.append(
                             (
                                 env.now,
@@ -382,6 +387,7 @@ def test_nested_preemption(env, log):
                             )
                         )
             except simpy.Interrupt as ir:
+                assert isinstance(ir.cause, Preempted)
                 log.append(
                     (
                         env.now,
@@ -515,10 +521,10 @@ def test_store(env):
 
     """
 
-    def putter(env, store, item):
+    def putter(_, store, item):
         yield store.put(item)
 
-    def getter(env, store, orig_item):
+    def getter(_, store, orig_item):
         item = yield store.get()
         assert item is orig_item
 

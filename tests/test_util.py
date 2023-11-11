@@ -41,6 +41,7 @@ def test_subscribe(env):
         try:
             yield env.event()
         except Interrupt as interrupt:
+            assert interrupt.cause is not None
             assert interrupt.cause[0] is child_proc
             assert interrupt.cause[1] == 'ohai'
             assert env.now == 3
@@ -81,6 +82,7 @@ def test_subscribe_with_join(env):
             yield child_proc2
         except Interrupt as interrupt:
             assert env.now == 1
+            assert interrupt.cause is not None
             assert interrupt.cause[0] is child_proc1
             assert child_proc2.is_alive
 
@@ -166,8 +168,8 @@ def test_wait_for_all_with_errors(env):
             env.timeout(3, value=3),
         ]
 
+        condition = env.all_of(events)
         try:
-            condition = env.all_of(events)
             yield condition
             assert False, 'There should have been an exception'
         except RuntimeError as e:
@@ -262,9 +264,8 @@ def test_any_of_with_errors(env):
 
     def parent(env):
         events = [env.process(child_with_error(env, 1)), env.timeout(2, value=2)]
-
+        condition = env.any_of(events)
         try:
-            condition = env.any_of(events)
             yield condition
             assert False, 'There should have been an exception'
         except RuntimeError as e:

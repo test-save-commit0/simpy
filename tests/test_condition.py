@@ -228,11 +228,11 @@ def test_shared_and_condition(env):
     c1 = timeout[0] & timeout[1]
     c2 = c1 & timeout[2]
 
-    def p1(env, condition):
+    def p1(_, condition):
         results = yield condition
         assert results == {timeout[0]: 0, timeout[1]: 1}
 
-    def p2(env, condition):
+    def p2(_, condition):
         results = yield condition
         assert results == {timeout[0]: 0, timeout[1]: 1, timeout[2]: 2}
 
@@ -246,11 +246,11 @@ def test_shared_or_condition(env):
     c1 = timeout[0] | timeout[1]
     c2 = c1 | timeout[2]
 
-    def p1(env, condition):
+    def p1(_, condition):
         results = yield condition
         assert results == {timeout[0]: 0}
 
-    def p2(env, condition):
+    def p2(_, condition):
         results = yield condition
         assert results == {timeout[0]: 0}
 
@@ -297,7 +297,7 @@ def test_nested_result_order(env):
     timeouts = [env.timeout(delay) for delay in range(3)]
     condition = (timeouts[0] | timeouts[1]) & timeouts[2]
 
-    def p(env, timeouts):
+    def p(_, timeouts):
         results = yield condition
         assert list(results.keys()) == timeouts
 
