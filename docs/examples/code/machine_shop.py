@@ -19,7 +19,6 @@ import random
 
 import simpy
 
-
 # fmt: off
 RANDOM_SEED = 42
 PT_MEAN = 10.0         # Avg. processing time in minutes

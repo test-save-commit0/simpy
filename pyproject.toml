@@ -72,8 +72,12 @@ select = [
     "F", # Pyflakes
     "E", # Pycodestyle
     "W", # Pycodestyle
+    "I", # isort
 ]
 ignore = []
 
 [tool.ruff.format]
 quote-style = "single"
+
+[tool.ruff.isort]
+known-first-party = ["simpy"]

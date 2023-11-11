@@ -9,7 +9,8 @@ matching a given criterion.
 
 """
 from __future__ import annotations
-from heapq import heappush, heappop
+
+from heapq import heappop, heappush
 from typing import (
     TYPE_CHECKING,
     Any,

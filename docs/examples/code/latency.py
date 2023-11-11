@@ -22,7 +22,6 @@ Example by:
 """
 import simpy
 
-
 SIM_DURATION = 100
 
 

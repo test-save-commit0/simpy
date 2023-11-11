@@ -20,7 +20,6 @@ import random
 
 import simpy
 
-
 # fmt: off
 RANDOM_SEED = 42
 NUM_MACHINES = 2  # Number of machines in the carwash

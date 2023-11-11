@@ -7,6 +7,7 @@ These events are triggered once the request has been completed.
 
 """
 from __future__ import annotations
+
 from types import TracebackType
 from typing import (
     TYPE_CHECKING,

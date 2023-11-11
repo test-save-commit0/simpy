@@ -3,7 +3,8 @@ Core components for event-discrete simulation environments.
 
 """
 from __future__ import annotations
-from heapq import heappush, heappop
+
+from heapq import heappop, heappush
 from itertools import count
 from types import MethodType
 from typing import (
@@ -20,6 +21,8 @@ from typing import (
 )
 
 from simpy.events import (
+    NORMAL,
+    URGENT,
     AllOf,
     AnyOf,
     Event,
@@ -27,10 +30,7 @@ from simpy.events import (
     Process,
     ProcessGenerator,
     Timeout,
-    URGENT,
-    NORMAL,
 )
-
 
 Infinity: float = float('inf')  #: Convenience alias for infinity
 

@@ -7,7 +7,6 @@ import pytest
 
 import simpy
 
-
 #
 # Tests for Resource
 #

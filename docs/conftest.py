@@ -14,9 +14,9 @@ import pathlib
 import subprocess
 import sys
 
+import pytest
 from _pytest.assertion.util import _diff_text
 from py._code.code import TerminalRepr
-import pytest
 
 
 def pytest_collect_file(path, parent):

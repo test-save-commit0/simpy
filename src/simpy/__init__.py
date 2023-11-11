@@ -12,12 +12,12 @@ import importlib.metadata
 from typing import Tuple, Type
 
 from simpy.core import Environment
-from simpy.rt import RealtimeEnvironment
-from simpy.exceptions import SimPyException, Interrupt
-from simpy.events import Event, Timeout, Process, AllOf, AnyOf
-from simpy.resources.resource import Resource, PriorityResource, PreemptiveResource
+from simpy.events import AllOf, AnyOf, Event, Process, Timeout
+from simpy.exceptions import Interrupt, SimPyException
 from simpy.resources.container import Container
-from simpy.resources.store import Store, PriorityItem, PriorityStore, FilterStore
+from simpy.resources.resource import PreemptiveResource, PriorityResource, Resource
+from simpy.resources.store import FilterStore, PriorityItem, PriorityStore, Store
+from simpy.rt import RealtimeEnvironment
 
 __all__ = [
     'AllOf',

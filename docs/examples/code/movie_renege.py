@@ -18,7 +18,6 @@ from typing import Dict, List, NamedTuple, Optional
 
 import simpy
 
-
 RANDOM_SEED = 42
 TICKETS = 50  # Number of tickets per movie
 SIM_TIME = 120  # Simulate until

@@ -22,7 +22,6 @@ import random
 
 import simpy
 
-
 # fmt: off
 RANDOM_SEED = 42
 STATION_TANK_SIZE = 200    # Size of the gas station tank (liters)

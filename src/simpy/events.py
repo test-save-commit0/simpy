@@ -14,6 +14,7 @@ used, there are several specialized subclasses of it.
 
 """
 from __future__ import annotations
+
 from types import FrameType
 from typing import (
     TYPE_CHECKING,

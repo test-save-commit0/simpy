@@ -8,11 +8,11 @@ fuel tanks.
 
 """
 from __future__ import annotations
+
 from typing import TYPE_CHECKING, Optional, Union
 
 from simpy.core import BoundClass, Environment
 from simpy.resources import base
-
 
 ContainerAmount = Union[int, float]
 

@@ -4,7 +4,7 @@ with the real-time (aka *wall-clock time*).
 """
 from time import monotonic, sleep
 
-from simpy.core import Environment, EmptySchedule, Infinity, SimTime
+from simpy.core import EmptySchedule, Environment, Infinity, SimTime
 
 
 class RealtimeEnvironment(Environment):

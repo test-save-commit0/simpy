@@ -32,7 +32,6 @@ import random
 import simpy
 import simpy.core
 
-
 RANDOM_SEED = 42
 SIM_TIME = 100
 
