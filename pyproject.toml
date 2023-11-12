@@ -85,12 +85,15 @@ select = [
     "INP", # flake8-no-pep40
     "T20", # flake8-print
     "PT", # flake8-pytest-style
+    "PYI", # flake8-pyi
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line
     "N818", # Require "Error" suffix on exception type names
     "UP006", # Use 'type' instead of 'Type' for annotations
     "UP007", # Use 'X | Y' instead of 'Optional' in annotations
+    "PYI034", # Confused by Put.__enter__ and Get.__enter__
+    "PYI041", # Use `float` instead of `int | float`
 ]
 
 [tool.ruff.format]
