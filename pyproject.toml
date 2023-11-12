@@ -95,6 +95,7 @@ select = [
     "PL", # Pylint
     "TRY", # tryceratops
     "FLY", # flynt
+    "PERF", # Perflint
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line
@@ -118,4 +119,4 @@ known-first-party = ["simpy"]
 [tool.ruff.lint.extend-per-file-ignores]
 "docs/*" = ["INP001"]
 "docs/examples/code/*" = ["T20"]
-"tests/*" = ["PLR2004", "PLR0913"]
+"tests/*" = ["PLR2004", "PLR0913", "PERF203"]
