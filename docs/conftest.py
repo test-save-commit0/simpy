@@ -13,6 +13,7 @@ contents of the ``*.out`` file.
 import pathlib
 import subprocess
 import sys
+from typing import ClassVar
 
 import pytest
 from _pytest.assertion.util import _diff_text
@@ -84,7 +85,7 @@ class ExampleItem(pytest.Item):
 class ReprFailExample(TerminalRepr):
     """Reports output mismatches in a nice and informative representation."""
 
-    Markup = {
+    Markup: ClassVar = {
         '+': {'green': True},
         '-': {'red': True},
         '?': {'bold': True},

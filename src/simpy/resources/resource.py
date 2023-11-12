@@ -249,7 +249,7 @@ class PriorityResource(Resource):
             """Request a usage slot with the given *priority*."""
             return PriorityRequest(self, priority, preempt)
 
-        def release(  # type: ignore[override] # noqa: F821
+        def release(  # type: ignore[override]
             self, request: PriorityRequest
         ) -> Release:
             """Release a usage slot."""
@@ -271,7 +271,7 @@ class PreemptiveResource(PriorityResource):
 
     users: List[PriorityRequest]  # type: ignore
 
-    def _do_put(  # type: ignore[override] # noqa: F821
+    def _do_put(  # type: ignore[override]
         self, event: PriorityRequest
     ) -> None:
         if len(self.users) >= self.capacity and event.preempt:

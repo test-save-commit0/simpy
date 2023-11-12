@@ -96,6 +96,7 @@ select = [
     "TRY", # tryceratops
     "FLY", # flynt
     "PERF", # Perflint
+    "RUF", # ruff-specific
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line

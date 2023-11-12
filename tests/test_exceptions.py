@@ -132,7 +132,7 @@ def test_exception_chaining(env):
             )
             .replace(r'\{line\}', r'\d+')
             .replace(r'\{path\}', r'.*')
-        )  # NOQA
+        )
 
         if platform.system() == 'Windows':
             expected = expected.replace(r'\/', r'\\')

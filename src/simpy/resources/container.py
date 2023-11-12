@@ -92,13 +92,13 @@ class Container(base.BaseResource):
 
     if TYPE_CHECKING:
 
-        def put(  # type: ignore[override] # noqa: F821
+        def put(  # type: ignore[override]
             self, amount: ContainerAmount
         ) -> ContainerPut:
             """Request to put *amount* of matter into the container."""
             return ContainerPut(self, amount)
 
-        def get(  # type: ignore[override] # noqa: F821
+        def get(  # type: ignore[override]
             self, amount: ContainerAmount
         ) -> ContainerGet:
             """Request to get *amount* of matter out of the container."""

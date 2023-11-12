@@ -86,13 +86,13 @@ class Store(base.BaseResource):
 
     if TYPE_CHECKING:
 
-        def put(  # type: ignore[override] # noqa: F821
+        def put(  # type: ignore[override]
             self, item: Any
         ) -> StorePut:
             """Request to put *item* into the store."""
             return StorePut(self, item)
 
-        def get(self) -> StoreGet:  # type: ignore[override] # noqa: F821
+        def get(self) -> StoreGet:  # type: ignore[override]
             """Request to get an *item* out of the store."""
             return StoreGet(self)
 
@@ -127,7 +127,7 @@ class PriorityItem(NamedTuple):
     #: The item to be stored.
     item: Any
 
-    def __lt__(  # type: ignore[override] # noqa: F821
+    def __lt__(  # type: ignore[override]
         self, other: PriorityItem
     ) -> bool:
         return self.priority < other.priority
@@ -192,7 +192,7 @@ class FilterStore(Store):
     else:
         get = BoundClass(FilterStoreGet)
 
-    def _do_get(  # type: ignore[override] # noqa: F821
+    def _do_get(  # type: ignore[override]
         self, event: FilterStoreGet
     ) -> Optional[bool]:
         for item in self.items:
