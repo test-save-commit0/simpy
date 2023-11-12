@@ -83,9 +83,9 @@ class ReprFailExample(TerminalRepr):
     """Reports output mismatches in a nice and informative representation."""
 
     Markup = {
-        '+': dict(green=True),
-        '-': dict(red=True),
-        '?': dict(bold=True),
+        '+': {'green': True},
+        '-': {'red': True},
+        '?': {'bold': True},
     }
     """Colorization codes for the diff markup."""
 

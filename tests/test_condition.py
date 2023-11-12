@@ -258,7 +258,7 @@ def test_shared_or_condition(env):
 
 def test_condition_value(env):
     """The value of a condition behaves like a readonly dictionary."""
-    timeouts = list([env.timeout(delay, value=delay) for delay in range(3)])
+    timeouts = [env.timeout(delay, value=delay) for delay in range(3)]
 
     def p(env, timeouts):
         results = yield env.all_of(timeouts)

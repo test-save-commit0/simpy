@@ -146,7 +146,7 @@ def test_all_of_generator(env):
         events = (env.timeout(i, value=i) for i in range(10))
         results = yield env.all_of(events)
 
-        assert list(results.values()) == [i for i in range(10)]
+        assert list(results.values()) == list(range(10))
         assert env.now == 9
 
     env.process(parent(env))

@@ -487,7 +487,7 @@ class ConditionValue:
         return ((event, event._value) for event in self.events)
 
     def todict(self) -> Dict[Event, Any]:
-        return dict((event, event._value) for event in self.events)
+        return {event: event._value for event in self.events}
 
 
 class Condition(Event):
