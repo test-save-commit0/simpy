@@ -194,7 +194,7 @@ class Event:
         if self._value is not PENDING:
             raise RuntimeError(f'{self} has already been triggered')
         if not isinstance(exception, BaseException):
-            raise ValueError(f'{exception} is not an exception.')
+            raise TypeError(f'{exception} is not an exception.')
         self._ok = False
         self._value = exception
         self.env.schedule(self)

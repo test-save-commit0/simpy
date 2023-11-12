@@ -87,11 +87,8 @@ def test_child_exception(env):
     """A child catches an exception and sends it to its parent."""
 
     def child(env):
-        try:
-            yield env.timeout(1)
-            raise RuntimeError('Onoes!')
-        except RuntimeError as err:
-            return err
+        yield env.timeout(1)
+        return RuntimeError('Onoes!')
 
     def parent(env):
         result = yield env.process(child(env))

@@ -93,6 +93,7 @@ select = [
     "TID", # flake8-tidy-imports
     "TCH", # flake8-type-checking
     "PL", # Pylint
+    "TRY", # tryceratops
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line
@@ -104,6 +105,7 @@ ignore = [
     "RET505", # Unnecessary `else` after `return` statement
     "RET506", # Unnecessary `else` after `raise` statement
     "SIM105", # Use `contextlib.suppress()` instead of try-except-pass
+    "TRY003", # Avoid specifying long messages outside the exception class
 ]
 
 [tool.ruff.format]
