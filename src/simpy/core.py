@@ -187,7 +187,7 @@ class Environment:
         try:
             self._now, _, _, event = heappop(self._queue)
         except IndexError:
-            raise EmptySchedule() from None
+            raise EmptySchedule from None
 
         # Process callbacks of the event. Set the events callbacks to None
         # immediately to prevent concurrent modifications.

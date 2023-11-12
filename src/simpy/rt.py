@@ -68,7 +68,7 @@ class RealtimeEnvironment(Environment):
         evt_time = self.peek()
 
         if evt_time is Infinity:
-            raise EmptySchedule()
+            raise EmptySchedule
 
         real_time = self.real_start + (evt_time - self.env_start) * self.factor
 
