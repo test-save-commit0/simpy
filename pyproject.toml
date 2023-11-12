@@ -83,6 +83,7 @@ select = [
     "ICN", # flake8-import-conventions
     "PIE", # flake8-pie
     "INP", # flake8-no-pep40
+    "T20", # flake8-print
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line
@@ -99,3 +100,4 @@ known-first-party = ["simpy"]
 
 [tool.ruff.lint.extend-per-file-ignores]
 "docs/*" = ["INP001"]
+"docs/examples/code/*" = ["T20"]
