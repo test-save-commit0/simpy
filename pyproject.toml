@@ -80,6 +80,7 @@ select = [
     "C4", # flake8-comprehensions
     "FA", # flake8-future-annotations
     "ISC", # flake8-implicit-str-concat
+    "ICN", # flake8-import-conventions
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line
