@@ -94,6 +94,7 @@ select = [
     "TCH", # flake8-type-checking
     "PL", # Pylint
     "TRY", # tryceratops
+    "FLY", # flynt
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line
