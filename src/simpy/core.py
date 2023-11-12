@@ -187,7 +187,7 @@ class Environment:
         try:
             self._now, _, _, event = heappop(self._queue)
         except IndexError:
-            raise EmptySchedule()
+            raise EmptySchedule() from None
 
         # Process callbacks of the event. Set the events callbacks to None
         # immediately to prevent concurrent modifications.
@@ -256,5 +256,5 @@ class Environment:
                 raise RuntimeError(
                     f'No scheduled events left but "until" event was not '
                     f'triggered: {until}'
-                )
+                ) from None
         return None

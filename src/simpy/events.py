@@ -440,10 +440,7 @@ class Process(Event):
 
                 msg = f'Invalid yield value "{event}"'
                 descr = _describe_frame(self._generator.gi_frame)
-                error = RuntimeError(f'\n{descr}{msg}')
-                # Drop the AttributeError as the cause for this exception.
-                error.__cause__ = None
-                raise error
+                raise RuntimeError(f'\n{descr}{msg}') from None
 
         self._target = event
         self.env._active_proc = None
