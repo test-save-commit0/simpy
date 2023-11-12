@@ -88,6 +88,7 @@ select = [
     "PYI", # flake8-pyi
     "RSE", # flake8-raise
     "RET", # flake8-return
+    "SLOT", # flake8-slots
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line
