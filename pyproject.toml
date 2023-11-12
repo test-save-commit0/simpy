@@ -81,6 +81,7 @@ select = [
     "FA", # flake8-future-annotations
     "ISC", # flake8-implicit-str-concat
     "ICN", # flake8-import-conventions
+    "PIE", # flake8-pie
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line
