@@ -85,8 +85,11 @@ def test_rt_slow_sim_no_error(log):
 def test_rt_illegal_until():
     """Test illegal value for *until*."""
     env = RealtimeEnvironment()
-    err = pytest.raises(ValueError, env.run, -1)
-    assert str(err.value) == ('until(=-1) must be > the current simulation time.')
+    with pytest.raises(
+        ValueError,
+        match=r'until \(-1\) must be greater than the current simulation time',
+    ):
+        env.run(-1)
 
 
 def test_rt_sync(log):

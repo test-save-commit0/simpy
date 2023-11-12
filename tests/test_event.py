@@ -30,12 +30,9 @@ def test_fail(env):
     """Test for the Environment.event() helper function."""
 
     def child(env, event):
-        try:
+        with pytest.raises(ValueError, match='ohai'):
             yield event
-            pytest.fail('Should not get here.')
-        except ValueError as err:
-            assert err.args[0] == 'ohai'
-            assert env.now == 5
+        assert env.now == 5
 
     def parent(env):
         event = env.event()
@@ -118,7 +115,8 @@ def test_condition_callback_removal(env):
     a.succeed()
     env.run(until=a | b)
     # The condition has removed its callback from event b.
-    assert not a.callbacks and not b.callbacks
+    assert not a.callbacks
+    assert not b.callbacks
 
 
 def test_condition_nested_callback_removal(env):

@@ -27,7 +27,8 @@ def test_negative_timeout(env):
         yield env.timeout(-1)
 
     env.process(pem(env))
-    pytest.raises(ValueError, env.run)
+    with pytest.raises(ValueError, match='Negative delay'):
+        env.run()
 
 
 def test_timeout_value(env):

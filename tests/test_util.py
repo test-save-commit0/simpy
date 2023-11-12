@@ -24,7 +24,8 @@ def test_start_delayed_error(env):
     def pem(env):
         yield env.timeout(1)
 
-    pytest.raises(ValueError, start_delayed, env, pem(env), delay=-1)
+    with pytest.raises(ValueError, match='delay.*must be > 0'):
+        start_delayed(env, pem(env), delay=-1)
 
 
 def test_subscribe(env):
@@ -41,9 +42,9 @@ def test_subscribe(env):
         try:
             yield env.event()
         except Interrupt as interrupt:
-            assert interrupt.cause is not None
-            assert interrupt.cause[0] is child_proc
-            assert interrupt.cause[1] == 'ohai'
+            assert interrupt.cause is not None  # noqa: PT017
+            assert interrupt.cause[0] is child_proc  # noqa: PT017
+            assert interrupt.cause[1] == 'ohai'  # noqa: PT017
             assert env.now == 3
 
     env.process(parent(env))
@@ -82,8 +83,8 @@ def test_subscribe_with_join(env):
             yield child_proc2
         except Interrupt as interrupt:
             assert env.now == 1
-            assert interrupt.cause is not None
-            assert interrupt.cause[0] is child_proc1
+            assert interrupt.cause is not None  # noqa: PT017
+            assert interrupt.cause[0] is child_proc1  # noqa: PT017
             assert child_proc2.is_alive
 
     env.process(parent(env))
@@ -99,7 +100,7 @@ def test_subscribe_at_timeout(env):
         try:
             yield env.timeout(10)
         except Interrupt as interrupt:
-            assert interrupt.cause == (to, None)
+            assert interrupt.cause == (to, None)  # noqa: PT017
             assert env.now == 2
 
     env.process(pem(env))
@@ -116,7 +117,7 @@ def test_subscribe_at_timeout_with_value(env):
         try:
             yield env.timeout(10)
         except Interrupt as interrupt:
-            assert interrupt.cause == (to, val)
+            assert interrupt.cause == (to, val)  # noqa: PT017
             assert env.now == 2
 
     env.process(pem(env))
@@ -334,7 +335,9 @@ def test_all_of_expansion(env):
     def p(env):
         timeouts = [env.timeout(d, d) for d in [3, 2, 1]]
         a, b, c = (yield env.all_of(timeouts)).values()
-        assert a == 3 and b == 2 and c == 1
+        assert a == 3
+        assert b == 2
+        assert c == 1
 
     env.process(p(env))
     env.run()

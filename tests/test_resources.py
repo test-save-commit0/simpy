@@ -41,7 +41,8 @@ def test_resource(env, log):
 
 
 def test_resource_capacity(env):
-    pytest.raises(ValueError, simpy.Resource, env, 0)
+    with pytest.raises(ValueError, match=r'"capacity" must be > 0.'):
+        simpy.Resource(env, 0)
 
 
 def test_resource_context_manager(env, log):
@@ -182,15 +183,13 @@ def test_resource_cm_exception(env, log):
     """Resource with context manager receives an exception."""
 
     def process(env, resource, log, raise_):
-        try:
-            with resource.request() as req:
-                yield req
-                yield env.timeout(1)
-                log.append(env.now)
-                if raise_:
+        with resource.request() as req:
+            yield req
+            yield env.timeout(1)
+            log.append(env.now)
+            if raise_:
+                with pytest.raises(ValueError, match='Foo'):
                     raise ValueError('Foo')
-        except ValueError as err:
-            assert err.args == ('Foo',)
 
     resource = simpy.Resource(env, 1)
     env.process(process(env, resource, log, True))
@@ -241,12 +240,9 @@ def test_sorted_queue_maxlen(env):
         resource.request(priority=1)
         # The second request is enqueued.
         resource.request(priority=1)
-        try:
+        with pytest.raises(RuntimeError, match='Cannot append event. Queue is full.'):
             # The third request will now fail.
             resource.request(priority=1)
-            pytest.fail('Expected a RuntimeError')
-        except RuntimeError as e:
-            assert e.args[0] == 'Cannot append event. Queue is full.'
         yield env.timeout(0)
 
     env.process(process(env, resource))
@@ -328,8 +324,8 @@ def test_mixed_preemption(env, log):
                 yield env.timeout(2)
                 log.append((env.now, id))
             except simpy.Interrupt as ir:
-                assert ir is not None
-                assert isinstance(ir.cause, Preempted)
+                assert ir is not None  # noqa: PT017
+                assert isinstance(ir.cause, Preempted)  # noqa: PT017
                 log.append((env.now, id, (ir.cause.by, ir.cause.usage_since)))
 
     res = simpy.PreemptiveResource(env, 1)
@@ -364,7 +360,7 @@ def test_nested_preemption(env, log):
                 yield env.timeout(5)
                 log.append((env.now, id))
             except simpy.Interrupt as ir:
-                assert isinstance(ir.cause, Preempted)
+                assert isinstance(ir.cause, Preempted)  # noqa: PT017
                 log.append((env.now, id, (ir.cause.by, ir.cause.usage_since)))
 
     def process2(id, env, res0, res1, delay, prio, preempt, log):
@@ -378,7 +374,7 @@ def test_nested_preemption(env, log):
                         yield env.timeout(5)
                         log.append((env.now, id))
                     except simpy.Interrupt as ir:
-                        assert isinstance(ir.cause, Preempted)
+                        assert isinstance(ir.cause, Preempted)  # noqa: PT017
                         log.append(
                             (
                                 env.now,
@@ -387,7 +383,7 @@ def test_nested_preemption(env, log):
                             )
                         )
             except simpy.Interrupt as ir:
-                assert isinstance(ir.cause, Preempted)
+                assert isinstance(ir.cause, Preempted)  # noqa: PT017
                 log.append(
                     (
                         env.now,
@@ -484,8 +480,10 @@ def test_initial_container_capacity(env):
 
 def test_container_get_put_bounds(env):
     container = simpy.Container(env)
-    pytest.raises(ValueError, container.get, -13)
-    pytest.raises(ValueError, container.put, -13)
+    with pytest.raises(ValueError, match='amount.*must be > 0'):
+        container.get(-13)
+    with pytest.raises(ValueError, match='amount.*must be > 0'):
+        container.put(-13)
 
 
 @pytest.mark.parametrize(
@@ -550,8 +548,10 @@ def test_initial_store_capacity(env, store_type):
 
 
 def test_store_capacity(env):
-    pytest.raises(ValueError, simpy.Store, env, 0)
-    pytest.raises(ValueError, simpy.Store, env, -1)
+    with pytest.raises(ValueError, match='"capacity" must be > 0'):
+        simpy.Store(env, 0)
+    with pytest.raises(ValueError, match='"capacity" must be > 0'):
+        simpy.Store(env, -1)
 
     capacity = 2
     store = simpy.Store(env, capacity)
@@ -650,7 +650,8 @@ def test_filter_store_get_after_mismatch(env):
         spam = store.get(lambda i: i == 'spam')
 
         ret = yield spam | eggs
-        assert spam in ret and eggs not in ret
+        assert spam in ret
+        assert eggs not in ret
         assert env.now == 0
 
         yield eggs

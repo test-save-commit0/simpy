@@ -79,11 +79,8 @@ def test_nested_cond_with_error(env):
         raise ValueError('Onoes!')
 
     def process(env):
-        try:
+        with pytest.raises(ValueError, match='Onoes!'):
             yield env.process(explode(env)) & env.timeout(1)
-            pytest.fail('The condition should have raised a ValueError')
-        except ValueError as err:
-            assert err.args == ('Onoes!',)
 
     env.process(process(env))
     env.run()
@@ -95,11 +92,8 @@ def test_cond_with_error(env):
         raise ValueError(f'Onoes, failed after {delay}!')
 
     def process(env):
-        try:
+        with pytest.raises(ValueError, match='Onoes, failed after 0!'):
             yield env.process(explode(env, 0)) | env.timeout(1)
-            pytest.fail('The condition should have raised a ValueError')
-        except ValueError as err:
-            assert err.args == ('Onoes, failed after 0!',)
 
     env.process(process(env))
     env.run()
@@ -111,11 +105,8 @@ def test_cond_with_nested_error(env):
         raise ValueError(f'Onoes, failed after {delay}!')
 
     def process(env):
-        try:
+        with pytest.raises(ValueError, match='Onoes, failed after 0!'):
             yield env.process(explode(env, 0)) & env.timeout(1) | env.timeout(1)
-            pytest.fail('The condition should have raised a ValueError')
-        except ValueError as err:
-            assert err.args == ('Onoes, failed after 0!',)
 
     env.process(process(env))
     env.run()
@@ -133,7 +124,7 @@ def test_cond_with_uncaught_error(env):
         yield env.timeout(1) | env.process(explode(env, 2))
 
     env.process(process(env))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='Onoes, failed after'):
         env.run()
     assert env.now == 2
 

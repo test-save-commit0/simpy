@@ -21,11 +21,8 @@ def test_error_forwarding(env):
         yield env.timeout(1)
 
     def parent(env):
-        try:
+        with pytest.raises(ValueError, match='Onoes!'):
             yield env.process(child(env))
-            pytest.fail('We should not have gotten here ...')
-        except ValueError as err:
-            assert err.args[0] == 'Onoes!'
 
     env.process(parent(env))
     env.run()
@@ -49,7 +46,8 @@ def test_no_parent_process(env):
             pytest.fail(f'There should be no error ({err}).')
 
     env.process(parent(env))
-    pytest.raises(ValueError, env.run)
+    with pytest.raises(ValueError, match='Onoes!'):
+        env.run()
 
 
 def test_crashing_child_traceback(env):
@@ -149,11 +147,8 @@ def test_invalid_event(env):
         yield None
 
     env.process(root(env))
-    try:
+    with pytest.raises(RuntimeError, match='Invalid yield value "None"'):
         env.run()
-        pytest.fail('Hey, this is not allowed!')
-    except RuntimeError as err:
-        assert err.args[0].endswith('Invalid yield value "None"')
 
 
 def test_exception_handling(env):

@@ -230,7 +230,7 @@ class Environment:
 
                 if at <= self.now:
                     raise ValueError(
-                        f'until(={at}) must be > the current simulation time.'
+                        f'until ({at}) must be greater than the current simulation time'
                     )
 
                 # Schedule the event before all regular timeouts.

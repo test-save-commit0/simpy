@@ -23,7 +23,10 @@ def test_event_queue_empty(env, log):
 
 def test_run_negative_until(env):
     """Test passing a negative time to run."""
-    pytest.raises(ValueError, env.run, -3)
+    with pytest.raises(
+        ValueError, match='must be greater than the current simulation time'
+    ):
+        env.run(-3)
 
 
 def test_run_resume(env):

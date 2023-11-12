@@ -13,11 +13,8 @@ def test_interruption(env):
     """Processes can be interrupted while waiting for other events."""
 
     def interruptee(env):
-        try:
+        with pytest.raises(simpy.Interrupt, match='interrupt!'):
             yield env.timeout(10)
-            pytest.fail('Expected an interrupt')
-        except simpy.Interrupt as interrupt:
-            assert interrupt.cause == 'interrupt!'
 
     def interruptor(env):
         child_process = env.process(interruptee(env))

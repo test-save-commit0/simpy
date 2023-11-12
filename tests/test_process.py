@@ -14,7 +14,8 @@ def test_start_non_process(env):
     def foo():
         pass
 
-    pytest.raises(ValueError, env.process, foo)
+    with pytest.raises(ValueError, match='is not a generator'):
+        env.process(foo)
 
 
 def test_get_state(env):

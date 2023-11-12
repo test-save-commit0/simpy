@@ -84,6 +84,7 @@ select = [
     "PIE", # flake8-pie
     "INP", # flake8-no-pep40
     "T20", # flake8-print
+    "PT", # flake8-pytest-style
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line
