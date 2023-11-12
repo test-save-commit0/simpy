@@ -74,11 +74,11 @@ sphinx:
     - python -m pip install tox
     - python -m tox -e sphinx
 
-flake8:
+ruff:
   stage: test
   script:
     - python -m pip install tox
-    - python -m tox -e flake8
+    - python -m tox -e ruff
 
 mypy:
   stage: test
