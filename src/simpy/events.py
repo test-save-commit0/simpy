@@ -15,7 +15,6 @@ used, there are several specialized subclasses of it.
 """
 from __future__ import annotations
 
-from types import FrameType
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -34,6 +33,8 @@ from typing import (
 from simpy.exceptions import Interrupt
 
 if TYPE_CHECKING:
+    from types import FrameType
+
     from simpy.core import Environment, SimTime
 
 PENDING: object = object()

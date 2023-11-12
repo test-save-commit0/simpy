@@ -8,7 +8,6 @@ These events are triggered once the request has been completed.
 """
 from __future__ import annotations
 
-from types import TracebackType
 from typing import (
     TYPE_CHECKING,
     ClassVar,
@@ -23,6 +22,9 @@ from typing import (
 
 from simpy.core import BoundClass, Environment
 from simpy.events import Event, Process
+
+if TYPE_CHECKING:
+    from types import TracebackType
 
 ResourceType = TypeVar('ResourceType', bound='BaseResource')
 

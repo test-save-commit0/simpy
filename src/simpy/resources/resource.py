@@ -30,12 +30,15 @@ whose resource users can be preempted by requests with a higher priority.
 """
 from __future__ import annotations
 
-from types import TracebackType
 from typing import TYPE_CHECKING, Any, List, Optional, Type
 
 from simpy.core import BoundClass, Environment, SimTime
-from simpy.events import Process
 from simpy.resources import base
+
+if TYPE_CHECKING:
+    from types import TracebackType
+
+    from simpy.events import Process
 
 
 class Preempted:
