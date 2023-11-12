@@ -87,6 +87,7 @@ select = [
     "PT", # flake8-pytest-style
     "PYI", # flake8-pyi
     "RSE", # flake8-raise
+    "RET", # flake8-return
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line
@@ -95,6 +96,8 @@ ignore = [
     "UP007", # Use 'X | Y' instead of 'Optional' in annotations
     "PYI034", # Confused by Put.__enter__ and Get.__enter__
     "PYI041", # Use `float` instead of `int | float`
+    "RET505", # Unnecessary `else` after `return` statement
+    "RET506", # Unnecessary `else` after `raise` statement
 ]
 
 [tool.ruff.format]

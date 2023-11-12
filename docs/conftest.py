@@ -24,6 +24,8 @@ def pytest_collect_file(path, parent):
     :class:`ExampleFile` instance."""
     if path.ext == '.py' and path.dirname.endswith('code'):
         return ExampleFile.from_parent(parent, path=pathlib.Path(path.strpath))
+    else:
+        return None
 
 
 class ExampleFile(pytest.File):
