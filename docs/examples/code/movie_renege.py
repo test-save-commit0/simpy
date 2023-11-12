@@ -22,6 +22,7 @@ import simpy
 
 RANDOM_SEED = 42
 TICKETS = 50  # Number of tickets per movie
+SELLOUT_THRESHOLD = 2  # Fewer tickets than this is a sellout
 SIM_TIME = 120  # Simulate until
 
 
@@ -55,7 +56,7 @@ def moviegoer(env, movie, num_tickets, theater):
 
         # Buy tickets
         theater.available[movie] -= num_tickets
-        if theater.available[movie] < 2:
+        if theater.available[movie] < SELLOUT_THRESHOLD:
             # Trigger the "sold out" event for the movie
             theater.sold_out[movie].succeed()
             theater.when_sold_out[movie] = env.now

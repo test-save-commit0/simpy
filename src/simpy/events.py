@@ -649,5 +649,4 @@ def _describe_frame(frame: FrameType) -> str:
                     f'  File "{filename}", line {lineno}, in {name}\n'
                     f'    {line.strip()}\n'
                 )
-        else:
-            return f'  File "{filename}", line {lineno}, in {name}\n'
+        return f'  File "{filename}", line {lineno}, in {name}\n'

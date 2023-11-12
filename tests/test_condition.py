@@ -259,7 +259,7 @@ def test_condition_value(env):
         assert list(results.items()) == list(zip(timeouts, [0, 1, 2]))
         assert timeouts[0] in results
         assert results[timeouts[0]] == 0
-        assert results == results
+        assert results == results  # noqa: PLR0124
         assert results == results.todict()
 
     env.process(p(env, timeouts))
