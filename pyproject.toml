@@ -89,6 +89,7 @@ select = [
     "RSE", # flake8-raise
     "RET", # flake8-return
     "SLOT", # flake8-slots
+    "SIM", # flake8-simplify
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line
@@ -99,6 +100,7 @@ ignore = [
     "PYI041", # Use `float` instead of `int | float`
     "RET505", # Unnecessary `else` after `return` statement
     "RET506", # Unnecessary `else` after `raise` statement
+    "SIM105", # Use `contextlib.suppress()` instead of try-except-pass
 ]
 
 [tool.ruff.format]

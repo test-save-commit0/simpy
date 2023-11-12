@@ -222,11 +222,7 @@ class Environment:
             if not isinstance(until, Event):
                 # Assume that *until* is a number if it is not None and
                 # not an event.  Create a Timeout(until) in this case.
-                at: SimTime
-                if isinstance(until, int):
-                    at = until
-                else:
-                    at = float(until)
+                at: SimTime = until if isinstance(until, int) else float(until)
 
                 if at <= self.now:
                     raise ValueError(
