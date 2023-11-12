@@ -82,6 +82,7 @@ select = [
     "ISC", # flake8-implicit-str-concat
     "ICN", # flake8-import-conventions
     "PIE", # flake8-pie
+    "INP", # flake8-no-pep40
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line
@@ -95,3 +96,6 @@ quote-style = "single"
 
 [tool.ruff.isort]
 known-first-party = ["simpy"]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"docs/*" = ["INP001"]
