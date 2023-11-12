@@ -90,6 +90,7 @@ select = [
     "RET", # flake8-return
     "SLOT", # flake8-slots
     "SIM", # flake8-simplify
+    "TID", # flake8-tidy-imports
 ]
 ignore = [
     "ISC001", # Implicitly concatenated string literals on one line
