@@ -78,6 +78,7 @@ select = [
     "YTT", # flake8-2020
     "B", # flake8-bugbear
     "C4", # flake8-comprehensions
+    "FA", # flake8-future-annotations
 ]
 ignore = [
     "N818", # Require "Error" suffix on exception type names

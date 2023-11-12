@@ -13,6 +13,8 @@ Scenario:
   to buy tickets for that movie renege (leave queue).
 
 """
+from __future__ import annotations
+
 import random
 from typing import Dict, List, NamedTuple, Optional
 
