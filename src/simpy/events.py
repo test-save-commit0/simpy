@@ -186,7 +186,7 @@ class Event:
         """Set *exception* as the events value, mark it as failed and schedule
         it for processing by the environment. Returns the event instance.
 
-        Raises :exc:`ValueError` if *exception* is not an :exc:`Exception`.
+        Raises :exc:`TypeError` if *exception* is not an :exc:`Exception`.
 
         Raises :exc:`RuntimeError` if this event has already been triggered.
 
