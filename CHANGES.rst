@@ -1,6 +1,19 @@
 Changelog for SimPy
 ===================
 
+4.1.1 - 2023-11-12
+------------------
+
+- [FIX] ``EventCallback`` typing using ``TypeVar``
+- [FIX] suppress some pyright typecheck issues involving ClassVars
+- [CHANGE] some inner exceptions are now raise from None
+- [CHANGE] ``Event.fail`` raises ``TypeError`` if it is not passed an ``Exception``
+- [CHANGE] use ruff for code formatting and linting
+- [CHANGE] add pyright typechecking to test suite
+- [CHANGE] code refactoring for ruff conformance
+- [DOCS] update examples to fix various lint issues
+
+
 4.1.0 - 2023-11-05
 ------------------
 
