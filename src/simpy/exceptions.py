@@ -3,7 +3,6 @@ SimPy specific exceptions.
 
 """
 from __future__ import annotations
-
 from typing import Any, Optional
 
 
@@ -26,10 +25,10 @@ class Interrupt(SimPyException):
     def __init__(self, cause: Optional[Any]):
         super().__init__(cause)
 
-    def __str__(self) -> str:
+    def __str__(self) ->str:
         return f'{self.__class__.__name__}({self.cause!r})'
 
     @property
-    def cause(self) -> Optional[Any]:
+    def cause(self) ->Optional[Any]:
         """The cause of the interrupt or ``None`` if no cause was provided."""
-        return self.args[0]
+        pass

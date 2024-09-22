@@ -9,18 +9,8 @@ matching a given criterion.
 
 """
 from __future__ import annotations
-
 from heapq import heappop, heappush
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    List,
-    NamedTuple,
-    Optional,
-    Union,
-)
-
+from typing import TYPE_CHECKING, Any, Callable, List, NamedTuple, Optional, Union
 from simpy.core import BoundClass, Environment
 from simpy.resources import base
 
@@ -55,11 +45,8 @@ class FilterStoreGet(StoreGet):
 
     """
 
-    def __init__(
-        self,
-        resource: FilterStore,
-        filter: Callable[[Any], bool] = lambda item: True,
-    ):
+    def __init__(self, resource: FilterStore, filter: Callable[[Any], bool]
+        =lambda item: True):
         self.filter = filter
         """The filter function to filter items in the store."""
         super().__init__(resource)
@@ -75,41 +62,25 @@ class Store(base.BaseResource):
 
     """
 
-    def __init__(self, env: Environment, capacity: Union[float, int] = float('inf')):
+    def __init__(self, env: Environment, capacity: Union[float, int]=float(
+        'inf')):
         if capacity <= 0:
             raise ValueError('"capacity" must be > 0.')
-
         super().__init__(env, capacity)
-
         self.items: List[Any] = []
         """List of the items available in the store."""
-
     if TYPE_CHECKING:
 
-        def put(  # type: ignore[override]
-            self, item: Any
-        ) -> StorePut:
+        def put(self, item: Any) ->StorePut:
             """Request to put *item* into the store."""
-            return StorePut(self, item)
+            pass
 
-        def get(self) -> StoreGet:  # type: ignore[override]
+        def get(self) ->StoreGet:
             """Request to get an *item* out of the store."""
-            return StoreGet(self)
-
+            pass
     else:
         put = BoundClass(StorePut)
         get = BoundClass(StoreGet)
-
-    def _do_put(self, event: StorePut) -> Optional[bool]:
-        if len(self.items) < self._capacity:
-            self.items.append(event.item)
-            event.succeed()
-        return None
-
-    def _do_get(self, event: StoreGet) -> Optional[bool]:
-        if self.items:
-            event.succeed(self.items.pop(0))
-        return None
 
 
 class PriorityItem(NamedTuple):
@@ -120,16 +91,10 @@ class PriorityItem(NamedTuple):
     unorderable items in a :class:`PriorityStore` instance.
 
     """
-
-    #: Priority of the item.
     priority: Any
-
-    #: The item to be stored.
     item: Any
 
-    def __lt__(  # type: ignore[override]
-        self, other: PriorityItem
-    ) -> bool:
+    def __lt__(self, other: PriorityItem) ->bool:
         return self.priority < other.priority
 
 
@@ -145,17 +110,6 @@ class PriorityStore(Store):
     items with *PriorityStore*, use :class:`PriorityItem`.
 
     """
-
-    def _do_put(self, event: StorePut) -> Optional[bool]:
-        if len(self.items) < self._capacity:
-            heappush(self.items, event.item)
-            event.succeed()
-        return None
-
-    def _do_get(self, event: StoreGet) -> Optional[bool]:
-        if self.items:
-            event.succeed(heappop(self.items))
-        return None
 
 
 class FilterStore(Store):
@@ -179,25 +133,12 @@ class FilterStore(Store):
         want it.
 
     """
-
     if TYPE_CHECKING:
 
-        def get(
-            self, filter: Callable[[Any], bool] = lambda item: True
-        ) -> FilterStoreGet:
+        def get(self, filter: Callable[[Any], bool]=lambda item: True
+            ) ->FilterStoreGet:
             """Request to get an *item*, for which *filter* returns ``True``,
             out of the store."""
-            return FilterStoreGet(self, filter)
-
+            pass
     else:
         get = BoundClass(FilterStoreGet)
-
-    def _do_get(  # type: ignore[override]
-        self, event: FilterStoreGet
-    ) -> Optional[bool]:
-        for item in self.items:
-            if event.filter(item):
-                self.items.remove(item)
-                event.succeed(item)
-                break
-        return True
