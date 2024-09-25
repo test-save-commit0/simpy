@@ -77,16 +77,16 @@ class Container(base.BaseResource):
     @property
     def level(self) ->ContainerAmount:
         """The current amount of the matter in the container."""
-        pass
+        return self._level
     if TYPE_CHECKING:
 
         def put(self, amount: ContainerAmount) ->ContainerPut:
             """Request to put *amount* of matter into the container."""
-            pass
+            return ContainerPut(self, amount)
 
         def get(self, amount: ContainerAmount) ->ContainerGet:
             """Request to get *amount* of matter out of the container."""
-            pass
+            return ContainerGet(self, amount)
     else:
         put = BoundClass(ContainerPut)
         get = BoundClass(ContainerGet)
