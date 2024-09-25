@@ -70,6 +70,15 @@ class Request(base.Put):
     resource: Resource
     usage_since: Optional[SimTime] = None
 
+    def __init__(self, resource: Resource):
+        super().__init__(resource)
+        self.resource = resource
+        self.usage_since = None
+
+    def __enter__(self):
+        self.usage_since = self.env.now
+        return self
+
     def __exit__(self, exc_type: Optional[Type[BaseException]], exc_value:
         Optional[BaseException], traceback: Optional[TracebackType]
         ) ->Optional[bool]:
@@ -89,6 +98,13 @@ class Release(base.Get):
         self.request = request
         """The request (:class:`Request`) that is to be released."""
         super().__init__(resource)
+
+    def __call__(self):
+        if self.request in self.resource.users:
+            self.resource.users.remove(self.request)
+            self.succeed()
+        else:
+            self.fail(ValueError("This request is not in the resource's users."))
 
 
 class PriorityRequest(Request):
@@ -138,7 +154,10 @@ class SortedQueue(list):
         Raise a :exc:`RuntimeError` if the queue is full.
 
         """
-        pass
+        if self.maxlen is not None and len(self) >= self.maxlen:
+            raise RuntimeError("Queue is full")
+        super().append(item)
+        self.sort(key=lambda x: x.key)
 
 
 class Resource(base.BaseResource):
@@ -168,7 +187,7 @@ class Resource(base.BaseResource):
     @property
     def count(self) ->int:
         """Number of users currently using the resource."""
-        pass
+        return len(self.users)
     if TYPE_CHECKING:
 
         def request(self) ->Request:
