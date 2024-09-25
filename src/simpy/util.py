@@ -33,7 +33,14 @@ def start_delayed(env: Environment, generator: ProcessGenerator, delay: SimTime
     Raise a :exc:`ValueError` if ``delay <= 0``.
 
     """
-    pass
+    if delay <= 0:
+        raise ValueError("delay must be > 0")
+    
+    def delayed_process():
+        yield env.timeout(delay)
+        yield from generator
+
+    return env.process(delayed_process())
 
 
 def subscribe_at(event: Event) ->None:
@@ -45,4 +52,11 @@ def subscribe_at(event: Event) ->None:
     Raise a :exc:`RuntimeError` if ``event`` has already occurred.
 
     """
-    pass
+    if event.triggered:
+        raise RuntimeError("Cannot subscribe to an event that has already occurred")
+    
+    def interrupt_callback(event):
+        import simpy
+        simpy.exceptions.Interrupt(event.value)
+
+    event.callbacks.append(interrupt_callback)
