@@ -75,19 +75,19 @@ class Event:
 
     def _desc(self) ->str:
         """Return a string *Event()*."""
-        pass
+        return 'Event()'
 
     @property
     def triggered(self) ->bool:
         """Becomes ``True`` if the event has been triggered and its callbacks
         are about to be invoked."""
-        pass
+        return self._value is not PENDING
 
     @property
     def processed(self) ->bool:
         """Becomes ``True`` if the event has been processed (e.g., its
         callbacks have been invoked)."""
-        pass
+        return self.callbacks is None
 
     @property
     def ok(self) ->bool:
@@ -98,7 +98,9 @@ class Event:
         :raises AttributeError: if accessed before the event is triggered.
 
         """
-        pass
+        if self._value is PENDING:
+            raise AttributeError('Event has not yet been triggered')
+        return self._ok
 
     @property
     def defused(self) ->bool:
@@ -115,7 +117,7 @@ class Event:
         processed by the :class:`~simpy.core.Environment`.
 
         """
-        pass
+        return self._defused
 
     @property
     def value(self) ->Optional[Any]:
@@ -126,7 +128,9 @@ class Event:
         Raises :exc:`AttributeError` if the value is not yet available.
 
         """
-        pass
+        if self._value is PENDING:
+            raise AttributeError('Value not yet available')
+        return self._value
 
     def trigger(self, event: Event) ->None:
         """Trigger the event with the state and value of the provided *event*.
@@ -136,7 +140,10 @@ class Event:
         chain reactions.
 
         """
-        pass
+        self._ok = event._ok
+        self._value = event._value
+        self._defused = event._defused
+        self.env.schedule(self)
 
     def succeed(self, value: Optional[Any]=None) ->Event:
         """Set the event's value, mark it as successful and schedule it for
@@ -145,7 +152,12 @@ class Event:
         Raises :exc:`RuntimeError` if this event has already been triggerd.
 
         """
-        pass
+        if self._value is not PENDING:
+            raise RuntimeError('Event has already been triggered')
+        self._ok = True
+        self._value = value
+        self.env.schedule(self)
+        return self
 
     def fail(self, exception: Exception) ->Event:
         """Set *exception* as the events value, mark it as failed and schedule
@@ -156,7 +168,14 @@ class Event:
         Raises :exc:`RuntimeError` if this event has already been triggered.
 
         """
-        pass
+        if not isinstance(exception, Exception):
+            raise TypeError('exception must be an Exception instance')
+        if self._value is not PENDING:
+            raise RuntimeError('Event has already been triggered')
+        self._ok = False
+        self._value = exception
+        self.env.schedule(self)
+        return self
 
     def __and__(self, other: Event) ->Condition:
         """Return a :class:`~simpy.events.Condition` that will be triggered if
@@ -197,7 +216,9 @@ class Timeout(Event):
 
     def _desc(self) ->str:
         """Return a string *Timeout(delay[, value=value])*."""
-        pass
+        if self._value is None:
+            return f'Timeout({self._delay})'
+        return f'Timeout({self._delay}, value={self._value})'
 
 
 class Initialize(Event):
@@ -267,7 +288,7 @@ class Process(Event):
 
     def _desc(self) ->str:
         """Return a string *Process(process_func_name)*."""
-        pass
+        return f'Process({self._generator.__name__})'
 
     @property
     def target(self) ->Event:
@@ -277,17 +298,17 @@ class Process(Event):
         interrupted.
 
         """
-        pass
+        return self._target
 
     @property
     def name(self) ->str:
         """Name of the function used to start the process."""
-        pass
+        return self._generator.__name__
 
     @property
     def is_alive(self) ->bool:
         """``True`` until the process generator exits."""
-        pass
+        return self._value is PENDING
 
     def interrupt(self, cause: Optional[Any]=None) ->None:
         """Interrupt this process optionally providing a *cause*.
@@ -297,13 +318,28 @@ class Process(Event):
         cases.
 
         """
-        pass
+        if not self.is_alive:
+            raise RuntimeError(f'{self} has terminated and cannot be interrupted.')
+        if self is self.env.active_process:
+            raise RuntimeError('A process is not allowed to interrupt itself.')
+        
+        Interruption(self, cause)
 
     def _resume(self, event: Event) ->None:
         """Resumes the execution of the process with the value of *event*. If
         the process generator exits, the process itself will get triggered with
         the return value or the exception of the generator."""
-        pass
+        try:
+            if event._ok:
+                self._target = self._generator.send(event._value)
+            else:
+                self._target = self._generator.throw(event._value)
+        except StopIteration as e:
+            self.succeed(e.value)
+        except BaseException as e:
+            self.fail(e)
+        else:
+            self._target.callbacks.append(self._resume)
 
 
 class ConditionValue:
@@ -383,16 +419,24 @@ class Condition(Event):
 
     def _desc(self) ->str:
         """Return a string *Condition(evaluate, [events])*."""
-        pass
+        return f'Condition({self._evaluate.__name__}, {self._events})'
 
     def _populate_value(self, value: ConditionValue) ->None:
         """Populate the *value* by recursively visiting all nested
         conditions."""
-        pass
+        for event in self._events:
+            if isinstance(event, Condition):
+                event._populate_value(value)
+            elif event.callbacks is None:
+                value.events.append(event)
 
     def _build_value(self, event: Event) ->None:
         """Build the value of this condition."""
-        pass
+        if not self._ok:
+            return
+        value = ConditionValue()
+        self._populate_value(value)
+        self._value = value
 
     def _remove_check_callbacks(self) ->None:
         """Remove _check() callbacks from events recursively.
@@ -403,24 +447,37 @@ class Condition(Event):
         untriggered events.
 
         """
-        pass
+        for event in self._events:
+            if event.callbacks and self._check in event.callbacks:
+                event.callbacks.remove(self._check)
+            if isinstance(event, Condition):
+                event._remove_check_callbacks()
 
     def _check(self, event: Event) ->None:
         """Check if the condition was already met and schedule the *event* if
         so."""
-        pass
+        if self._value is not PENDING:
+            return
+
+        self._count += 1
+
+        if not event._ok:
+            self.fail(event._value)
+        elif self._evaluate(self._events, self._count):
+            self._remove_check_callbacks()
+            self.succeed()
 
     @staticmethod
     def all_events(events: Tuple[Event, ...], count: int) ->bool:
         """An evaluation function that returns ``True`` if all *events* have
         been triggered."""
-        pass
+        return len(events) == count
 
     @staticmethod
     def any_events(events: Tuple[Event, ...], count: int) ->bool:
         """An evaluation function that returns ``True`` if at least one of
         *events* has been triggered."""
-        pass
+        return count > 0
 
 
 class AllOf(Condition):
@@ -447,4 +504,7 @@ class AnyOf(Condition):
 
 def _describe_frame(frame: FrameType) ->str:
     """Print filename, line number and function name of a stack frame."""
-    pass
+    filename = frame.f_code.co_filename
+    lineno = frame.f_lineno
+    funcname = frame.f_code.co_name
+    return f'{filename}:{lineno}, in {funcname}'
