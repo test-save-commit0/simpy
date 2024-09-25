@@ -73,11 +73,11 @@ class Store(base.BaseResource):
 
         def put(self, item: Any) ->StorePut:
             """Request to put *item* into the store."""
-            pass
+            return StorePut(self, item)
 
         def get(self) ->StoreGet:
             """Request to get an *item* out of the store."""
-            pass
+            return StoreGet(self)
     else:
         put = BoundClass(StorePut)
         get = BoundClass(StoreGet)
@@ -111,6 +111,31 @@ class PriorityStore(Store):
 
     """
 
+    def __init__(self, env: Environment, capacity: Union[float, int]=float('inf')):
+        super().__init__(env, capacity)
+        self.items = []  # Use a list as a heap
+
+    if TYPE_CHECKING:
+        def put(self, item: Any) -> StorePut:
+            """Request to put *item* into the store."""
+            return StorePut(self, item)
+
+        def get(self) -> StoreGet:
+            """Request to get the highest priority *item* from the store."""
+            return StoreGet(self)
+    else:
+        put = BoundClass(StorePut)
+        get = BoundClass(StoreGet)
+
+    def _do_put(self, event: StorePut) -> None:
+        if len(self.items) < self.capacity:
+            heappush(self.items, event.item)
+            event.succeed()
+
+    def _do_get(self, event: StoreGet) -> None:
+        if self.items:
+            event.succeed(heappop(self.items))
+
 
 class FilterStore(Store):
     """Resource with *capacity* slots for storing arbitrary objects supporting
@@ -139,6 +164,13 @@ class FilterStore(Store):
             ) ->FilterStoreGet:
             """Request to get an *item*, for which *filter* returns ``True``,
             out of the store."""
-            pass
+            return FilterStoreGet(self, filter)
     else:
         get = BoundClass(FilterStoreGet)
+
+    def _do_get(self, event: FilterStoreGet) -> None:
+        for item in self.items:
+            if event.filter(item):
+                self.items.remove(item)
+                event.succeed(item)
+                break
