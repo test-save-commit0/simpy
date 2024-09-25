@@ -73,11 +73,18 @@ class Store(base.BaseResource):
 
         def put(self, item: Any) ->StorePut:
             """Request to put *item* into the store."""
-            pass
+            if len(self.items) < self.capacity:
+                self.items.append(item)
+                return StorePut(self, item)
+            else:
+                return StorePut(self, item)
 
         def get(self) ->StoreGet:
             """Request to get an *item* out of the store."""
-            pass
+            if self.items:
+                return StoreGet(self)
+            else:
+                return StoreGet(self)
     else:
         put = BoundClass(StorePut)
         get = BoundClass(StoreGet)
@@ -110,6 +117,29 @@ class PriorityStore(Store):
     items with *PriorityStore*, use :class:`PriorityItem`.
 
     """
+    def __init__(self, env: Environment, capacity: Union[float, int]=float('inf')):
+        super().__init__(env, capacity)
+        self.items = []  # Use a list as a heap
+
+    if TYPE_CHECKING:
+        def put(self, item: Any) -> StorePut:
+            """Request to put *item* into the store."""
+            if len(self.items) < self.capacity:
+                heappush(self.items, item)
+                return StorePut(self, item)
+            else:
+                return StorePut(self, item)
+
+        def get(self) -> StoreGet:
+            """Request to get the item with the highest priority from the store."""
+            if self.items:
+                item = heappop(self.items)
+                return StoreGet(self)
+            else:
+                return StoreGet(self)
+    else:
+        put = BoundClass(StorePut)
+        get = BoundClass(StoreGet)
 
 
 class FilterStore(Store):
@@ -139,6 +169,11 @@ class FilterStore(Store):
             ) ->FilterStoreGet:
             """Request to get an *item*, for which *filter* returns ``True``,
             out of the store."""
-            pass
+            filtered_items = [item for item in self.items if filter(item)]
+            if filtered_items:
+                self.items.remove(filtered_items[0])
+                return FilterStoreGet(self, filter)
+            else:
+                return FilterStoreGet(self, filter)
     else:
         get = BoundClass(FilterStoreGet)
