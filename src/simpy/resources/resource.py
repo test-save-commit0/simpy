@@ -120,6 +120,21 @@ class PriorityRequest(Request):
         requests are more important)."""
         super().__init__(resource)
 
+    def __call__(self, *args, **kwargs):
+        if isinstance(self.resource, PreemptiveResource) and self.preempt:
+            users = self.resource.users
+            if len(users) >= self.resource.capacity:
+                preempt_victim = max(users, key=lambda x: x.key)
+                if self.key < preempt_victim.key:
+                    self.resource.users.remove(preempt_victim)
+                    preempt_victim.proc.interrupt(Preempted(by=self.proc,
+                        usage_since=preempt_victim.usage_since,
+                        resource=self.resource))
+                    self.resource.users.append(self)
+                    self.usage_since = self.resource._env.now
+                    return self.resource._env.event()
+        return super().__call__(*args, **kwargs)
+
 
 class SortedQueue(list):
     """Queue for sorting events by their :attr:`~PriorityRequest.key`
@@ -138,7 +153,10 @@ class SortedQueue(list):
         Raise a :exc:`RuntimeError` if the queue is full.
 
         """
-        pass
+        if self.maxlen is not None and len(self) >= self.maxlen:
+            raise RuntimeError('Queue is full')
+        super().append(item)
+        self.sort(key=lambda x: x.key)
 
 
 class Resource(base.BaseResource):
@@ -168,7 +186,7 @@ class Resource(base.BaseResource):
     @property
     def count(self) ->int:
         """Number of users currently using the resource."""
-        pass
+        return len(self.users)
     if TYPE_CHECKING:
 
         def request(self) ->Request:
